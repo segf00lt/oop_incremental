@@ -1,0 +1,16 @@
+#BlueJ class context
+#Thu Sep 25 2026
+comment0.target=Escola
+comment0.text=
+comment1.params=
+comment1.target=Escola()
+comment1.text=
+comment2.params=
+comment2.target=float getMediaDesempenho()
+comment2.text=
+comment3.params=
+comment3.target=Estudante[] getEstudantesMatriculados()
+comment3.text=
+comment4.params=
+comment4.target=void aplicarAvaliacao()
+comment4.text=
