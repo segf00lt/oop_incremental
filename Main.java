@@ -11,6 +11,8 @@ public class Main {
             18
         );
 
+        secretaria.matricularEstudanteEmEscola("ESC001", "Aurélio");
+
         for(int i = 1; i <= Secretaria.PERIODO_MAXIMO; i++) {
             System.out.printf("=== REALIZANDO AV%d ===\n\n", i);
             secretaria.avaliarEscolas(i);

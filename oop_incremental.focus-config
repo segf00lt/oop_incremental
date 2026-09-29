@@ -19,6 +19,8 @@
 *.lua
 *.nmake
 *.ctxt
+release/
+*.zip
 
 [[settings]]
 tab_size:                               4

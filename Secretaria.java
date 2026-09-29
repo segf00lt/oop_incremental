@@ -65,7 +65,8 @@ public class Secretaria {
         return null;
     }
 
-    public void matricularEstudanteEmEscola(Escola escola, String nomeEstudante) {
+    public void matricularEstudanteEmEscola(String codigoEscola, String nomeEstudante) {
+        Escola escola = this.getEscolaPorCodigo(codigoEscola);
         escola.matricularEstudante(nomeEstudante);
     }
 }
