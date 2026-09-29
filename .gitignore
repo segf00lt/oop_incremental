@@ -56,3 +56,5 @@ clay_test
 imgui.ini
 imgui_test
 *.class
+release/
+release.zip
