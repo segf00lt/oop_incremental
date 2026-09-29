@@ -7,4 +7,11 @@ public class Avaliacao {
         this.numero = numero;
     }
 
+    public String getIdentificador() {
+        return this.identificador;
+    }
+    public int getNumero() {
+        return this.numero;
+    }
+
 }

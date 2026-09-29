@@ -1,7 +1,7 @@
 #BlueJ class context
-#Thu Sep 25 2026
 comment0.target=ResultadoAvaliacao
-comment0.text=
-comment1.params=
-comment1.target=ResultadoAvaliacao()
-comment1.text=
+comment1.params=avaliacao\ nota
+comment1.target=ResultadoAvaliacao(Avaliacao,\ float)
+comment2.params=
+comment2.target=float\ getNota()
+numComments=3
