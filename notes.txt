@@ -1,0 +1,58 @@
+Este exercício será desenvolvido através de pequenos incrementos. O objetivo é simular a atividade de desenvolvimento de um projeto de desenvolvimento de software em ambiente real. Nestes ambientes, softwares serão desenvolvidos de forma iterativa e incremental.  Sendo assim, o aluno irá desenvolver novas funcionalidades que serão adicionadas ao código do software previamente desenvolvido. Cada incremento será uma nova tarefa com data e horário a ser entregue. O upload do código deve conter todo o software e não apenas o incremento.
+
+Sistema de Acompanhamento da Rede Municipal de Ensino
+
+Uma Secretaria Municipal de Educação deseja desenvolver um sistema para acompanhar a situação das escolas da rede ao longo do ano letivo. A Secretaria acompanha diversas escolas, sendo necessário manter informações que permitam identificar cada unidade, como seu código, nome, endereço e município ou região em que está localizada. Também é importante registrar a quantidade de estudantes matriculados em cada escola e manter as informações dos estudantes vinculados a cada unidade. Para cada estudante, devem ser armazenados dados que permitam sua identificação, como matrícula e nome, além das informações relacionadas à sua frequência.
+
+Durante o ano letivo, cada escola participa de três avaliações de aprendizagem realizadas pela Secretaria. Cada avaliação possui uma identificação que permite distingui-la das demais e está associada a um determinado momento do acompanhamento. Para cada escola, deve ser registrado o resultado obtido em cada uma das três avaliações, representado por uma média de desempenho. Dessa forma, o sistema deverá manter os resultados da primeira, da segunda e da terceira avaliação, permitindo posteriormente comparar o desempenho da escola ao longo do ano.
+
+A frequência também será acompanhada periodicamente. Para isso, o sistema deverá manter informações que permitam saber quantos estudantes estão matriculados e quantos estiveram presentes em determinado período. A partir dessas informações, posteriormente será possível calcular a frequência da escola.
+
+O sistema deverá permitir o cadastro e a consulta das informações das escolas, dos estudantes e das avaliações realizadas, mantendo os relacionamentos necessários entre essas informações. Uma escola poderá possuir vários estudantes e deverá ter seus resultados registrados nas diferentes avaliações realizadas pela Secretaria. A Secretaria, por sua vez, deverá trabalhar com várias escolas da rede.
+
+
+Exercício Incremental 1
+Neste primeiro incremento, o aluno deverá analisar o cenário apresentado e identificar os elementos que precisam ser representados no sistema e suas principais características. A definição deverá ser suficiente para que, nos próximos incrementos, o sistema possa calcular indicadores de frequência e desempenho, acompanhar a evolução das escolas e produzir análises para apoiar a tomada de decisão da Secretaria.
+
+
+
+Exercício Incremental 1.1
+Dando continuidade ao Sistema de Monitoramento Escolar desenvolvido na atividade anterior, novas necessidades foram identificadas pela Secretaria Municipal de Educação.
+
+Quando uma escola é criada no sistema, devem ser informados obrigatoriamente o nome da escola, a quantidade de alunos matriculados e a quantidade de alunos presentes. Entretanto, em algumas situações, a quantidade de alunos presentes ainda não está disponível no momento do registro. Nesses casos, o sistema deverá atribuir automaticamente o valor 0 para esse dado.
+
+Em outro cenário, a escola poderá ser registrada apenas com seu nome e quantidade de alunos matriculados, ficando as demais informações com valores iniciais definidos pelo sistema.
+
+Para o acompanhamento do desempenho, a escola realiza até três avaliações, com notas entre 0 e 10. Durante o ano, o sistema deverá permitir obter o desempenho considerando apenas a primeira avaliação, a média das duas primeiras avaliações ou a média das três avaliações, conforme os resultados disponíveis.
+
+Ao final, o sistema deverá apresentar os dados da escola, a frequência dos estudantes e o desempenho calculado de acordo com a quantidade de avaliações informadas, mantendo as funcionalidades desenvolvidas nas etapas anteriores.
+
+
+
+
+
+
+Exercício Incremental 2
+
+Dando continuidade ao Sistema de Monitoramento Escolar
+desenvolvido nas atividades anteriores, a Secretaria Municipal de Educação
+identificou a necessidade de ampliar o acompanhamento das unidades escolares.
+
+Cada escola possui um conjunto de turmas. Para cada turma devem ser informados
+sua identificação, quantidade de alunos matriculados e quantidade de alunos que
+realizaram a avaliação, etapa de ensino. Uma turma somente deverá existir
+vinculada à escola na qual foi criada. Caso a escola seja excluída do sistema,
+suas turmas também deverão deixar de existir, inicialmente a turma é cadastrada
+com zero alunos após a avaliação ela será atualizada.
+
+A escola também deverá possuir professores, identificados por nome, matrícula e
+área de atuação. Um professor deverá permanecer cadastrado independentemente da
+escola em que esteja atuando. Dessa forma, caso deixe uma unidade escolar, seus
+dados deverão continuar disponíveis para que ele possa ser associado a outra
+escola. Um mesmo professor também poderá atuar em mais de uma unidade escolar.
+
+O sistema deverá apresentar as turmas pertencentes a cada escola e suas
+respectivas frequências, bem como os professores vinculados à unidade. Também
+deverá permitir a mudança de um professor entre escolas sem a necessidade de
+realizar um novo cadastro, mantendo as funcionalidades desenvolvidas nas etapas
+anteriores.

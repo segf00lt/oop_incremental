@@ -1,10 +1,10 @@
 public class Estudante {
-    private int matricula;
+    private int id;
     private String nome;
     private int faltas;
 
-    public Estudante(int matricula, String nome) {
-        this.matricula = matricula;
+    public Estudante(int id, String nome) {
+        this.id = id;
         this.nome = nome;
         this.faltas = 0;
     }
@@ -17,8 +17,8 @@ public class Estudante {
         return this.faltas;
     }
 
-    public int getMatricula() {
-        return this.matricula;
+    public int getId() {
+        return this.id;
     }
 
     public String getNome() {

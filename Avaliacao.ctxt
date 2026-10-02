@@ -1,5 +1,8 @@
 #BlueJ class context
+#Fri Oct 02 16:22:38 BRT 2026
 comment0.target=Avaliacao
-comment1.params=identificador\ numero
-comment1.target=Avaliacao(java.lang.String,\ int)
-numComments=2
+comment1.params=identificador numero
+comment1.target=Avaliacao(java.lang.String, int)
+comment2.target=java.lang.String getIdentificador()
+comment3.target=int getNumero()
+numComments=4

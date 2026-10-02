@@ -2,26 +2,29 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Escola {
-    private String codigo;
+    private int id;
     private String nome;
     private String endereco;
     private String municipioRegiao;
     private ResultadoAvaliacao[] resultadosAvaliacoes;
     private int[] quantidadeEstudantesPresentesPorPeriodo;
     private float mediaDesempenho;
-    private ArrayList<Estudante> estudantesMatriculados;
-    private int contadorMatricula;
+    private ArrayList<Estudante> estudantes;
+    private ArrayList<Professor> professores;
+
+    private int contadorIdEstudante;
+    private int contadorIdTurma;
 
     public Escola(
-        String codigo,
+        Secretaria secretaria,
         String nome,
         String endereco,
         String municipioRegiao,
-        int quantidadeEstudantesMatriculados,
+        int quantidadeEstudantes,
         int quantidadeEstudantesPresentes
     ) {
 
-        this.codigo                        = codigo;
+        this.id                            = secretaria.alocarIdEscola();
         this.nome                          = nome;
         this.endereco                      = endereco;
         this.municipioRegiao               = municipioRegiao;
@@ -35,32 +38,36 @@ public class Escola {
             this.quantidadeEstudantesPresentesPorPeriodo[i] = quantidadeEstudantesPresentes;
         }
 
-        this.contadorMatricula = 0;
+        this.contadorIdEstudante = 0;
+        this.contadorIdTurma = 0;
 
         this.mediaDesempenho               = 0.0f;
-        this.estudantesMatriculados        = new ArrayList<Estudante>(quantidadeEstudantesMatriculados);
+        this.estudantes        = new ArrayList<Estudante>(quantidadeEstudantes);
+        this.professores       = new ArrayList<Professor>();
 
-        this.initEstudantes(quantidadeEstudantesMatriculados);
+        this.initEstudantes(quantidadeEstudantes);
 
     }
 
     public Escola(
+        Secretaria secretaria,
         String nome,
-        int quantidadeEstudantesMatriculados,
+        int quantidadeEstudantes,
         int quantidadeEstudantesPresentes
     ) {
-        this("N/A", nome, "N/A", "N/A", quantidadeEstudantesMatriculados, quantidadeEstudantesPresentes);
+        this(secretaria, nome, "N/A", "N/A", quantidadeEstudantes, quantidadeEstudantesPresentes);
     }
 
     // NOTE jfd 25/09/26: This method may be redundant due to the overload of Secretaria.cadastrarEscola()
     public Escola(
+        Secretaria secretaria,
         String nome,
-        int quantidadeEstudantesMatriculados
+        int quantidadeEstudantes
     ) {
-        this(nome, quantidadeEstudantesMatriculados, 0);
+        this(secretaria, nome, quantidadeEstudantes, 0);
     }
 
-    private void initEstudantes(int quantidadeEstudantesMatriculados) {
+    private void initEstudantes(int quantidadeEstudantes) {
         String[] nomes = {
             "João", "José", "Antônio", "Francisco", "Carlos",
             "Paulo", "Pedro", "Lucas", "Gabriel", "Miguel",
@@ -88,21 +95,32 @@ public class Escola {
 
         int maximoDeFaltas = 25;
 
-        for(int i = 0; i < quantidadeEstudantesMatriculados; i++) {
+        for(int i = 0; i < quantidadeEstudantes; i++) {
             int nomeIndice = r.nextInt(nomes.length);
             String nome = nomes[nomeIndice];
-            Estudante e = matricularEstudante(nome);
+            Estudante e = cadastrarEstudante(nome);
             e.setFaltas(r.nextInt(maximoDeFaltas + 1));
         }
 
     }
 
-    public Estudante matricularEstudante(String nome) {
-        int matricula = this.contadorMatricula;
-        this.contadorMatricula++;
-        Estudante e = new Estudante(matricula, nome);
-        this.estudantesMatriculados.add(e);
+    public Estudante cadastrarEstudante(String nome) {
+        int id = this.contadorIdEstudante;
+        this.contadorIdEstudante++;
+        Estudante e = new Estudante(id, nome);
+        this.estudantes.add(e);
         return e;
+    }
+
+    public void cadastrarProfessor(Professor p) {
+        assert p != null;
+        this.professores.add(p);
+    }
+
+    public int alocarIdTurma() {
+        int result = this.contadorIdTurma;
+        this.contadorIdTurma++;
+        return result;
     }
 
     private float calcularMediaDesempenho(ResultadoAvaliacao[] resultados, int numeroResultadosConsiderados) {
@@ -170,12 +188,12 @@ public class Escola {
         this.quantidadeEstudantesPresentesPorPeriodo[periodo] = quantidade;
     }
 
-    public ArrayList<Estudante> getEstudantesMatriculados() {
-        return this.estudantesMatriculados;
+    public ArrayList<Estudante> getEstudantes() {
+        return this.estudantes;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setNome(String nome) {
@@ -190,8 +208,8 @@ public class Escola {
         this.municipioRegiao = municipioRegiao;
     }
 
-    public String getCodigo() {
-        return this.codigo;
+    public int getId() {
+        return this.id;
     }
 
     public String getNome() {
@@ -206,27 +224,38 @@ public class Escola {
         return this.municipioRegiao;
     }
 
-    public void apresentarDados() {
+    public void apresentar() {
         System.out.println("========================================");
         System.out.println("Dados da Escola");
         System.out.println("========================================");
 
-        System.out.println("Código: " + this.codigo);
+        System.out.println("Identificador: " + this.id);
         System.out.println("Nome: " + this.nome);
         System.out.println("Endereço: " + this.endereco);
         System.out.println("Município/Região: " + this.municipioRegiao);
 
         System.out.println();
-        System.out.println("Quantidade de estudantes: " + this.estudantesMatriculados.size());
+        System.out.println("Quantidade de professores: " + this.professores.size());
+        System.out.println("Professores: ");
+        for(Professor p : this.professores) {
+            System.out.println(
+                "  Identificador: " + p.getId() +
+                " | Nome: " + p.getNome() +
+                " | Area: " + p.getArea()
+            );
+        }
+
+        System.out.println();
+        System.out.println("Quantidade de estudantes: " + this.estudantes.size());
 
         System.out.println();
         System.out.println("Estudantes:");
 
-        for(Estudante estudante : this.estudantesMatriculados) {
+        for(Estudante e : this.estudantes) {
             System.out.println(
-                "  Matrícula: " + estudante.getMatricula() +
-                " | Nome: " + estudante.getNome() +
-                " | Faltas: " + estudante.getFaltas()
+                "  Identificador: " + e.getId() +
+                " | Nome: " + e.getNome() +
+                " | Faltas: " + e.getFaltas()
             );
         }
 
@@ -235,11 +264,11 @@ public class Escola {
 
         int totalFaltas = 0;
 
-        for(Estudante estudante : this.estudantesMatriculados) {
+        for(Estudante estudante : this.estudantes) {
             totalFaltas += estudante.getFaltas();
         }
 
-        int totalEstudantes = this.estudantesMatriculados.size();
+        int totalEstudantes = this.estudantes.size();
 
         if(totalEstudantes > 0) {
             float mediaDeFaltasPorEstudante = ((float)totalFaltas / (float)totalEstudantes);
@@ -247,7 +276,7 @@ public class Escola {
             System.out.println("  Total de faltas: " + totalFaltas);
             System.out.println("  Média de faltas por estudante: " + mediaDeFaltasPorEstudante );
         } else {
-            System.out.println("  Nenhum estudante matriculado.");
+            System.out.println("  Nenhum estudante cadastrado.");
         }
 
         System.out.println();

@@ -1,0 +1,11 @@
+#BlueJ class context
+#Fri Oct 02 16:22:29 BRT 2026
+comment0.target=Turma
+comment1.params=escola
+comment1.target=Turma(Escola)
+comment2.params=estudante
+comment2.target=void cadastrarEstudante(Estudante)
+comment3.target=int getId()
+comment4.target=java.util.ArrayList getEstudantes()
+comment5.target=int getQuantidadeEstudantesRealizaramAvaliacao()
+numComments=6

@@ -1,0 +1,9 @@
+#BlueJ class context
+#Fri Oct 02 16:22:22 BRT 2026
+comment0.target=Professor
+comment1.params=secretaria nome area
+comment1.target=Professor(Secretaria, java.lang.String, java.lang.String)
+comment2.target=java.lang.String getNome()
+comment3.target=int getId()
+comment4.target=java.lang.String getArea()
+numComments=5
