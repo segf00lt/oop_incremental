@@ -1,20 +1,35 @@
+import java.util.ArrayList;
+
 public class Estudante {
     private int id;
     private String nome;
-    private int faltas;
+    private ArrayList<Falta> faltas;
 
     public Estudante(int id, String nome) {
         this.id = id;
         this.nome = nome;
-        this.faltas = 0;
+        this.faltas = new ArrayList<Falta>();
     }
 
-    public void setFaltas(int faltas) {
-        this.faltas = faltas;
+    public void addFalta(int periodo) {
+        Falta f = new Falta(periodo);
+        this.faltas.add(f);
     }
 
-    public int getFaltas() {
-        return this.faltas;
+    public int getTotalFaltas() {
+        return this.faltas.size();
+    }
+
+    public int getFaltasPorPeriodo(int periodo) {
+        int total = 0;
+
+        for(Falta f : this.faltas) {
+            if(f.getPeriodo() == periodo) {
+                total++;
+            }
+        }
+
+        return total;
     }
 
     public int getId() {
@@ -25,5 +40,12 @@ public class Estudante {
         return this.nome;
     }
 
+    public void apresentar() {
+        System.out.println(
+            "  Identificador: " + this.id +
+            " | Nome: " + this.nome +
+            " | Faltas: " + this.getTotalFaltas()
+        );
+    }
 
 }

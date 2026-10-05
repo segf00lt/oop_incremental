@@ -11,6 +11,7 @@ public class Escola {
     private float mediaDesempenho;
     private ArrayList<Estudante> estudantes;
     private ArrayList<Professor> professores;
+    private ArrayList<Turma> turmas;
 
     private int contadorIdEstudante;
     private int contadorIdTurma;
@@ -28,13 +29,13 @@ public class Escola {
         this.nome                          = nome;
         this.endereco                      = endereco;
         this.municipioRegiao               = municipioRegiao;
-        this.resultadosAvaliacoes          = new ResultadoAvaliacao[Secretaria.PERIODO_MAXIMO];
-        this.quantidadeEstudantesPresentesPorPeriodo = new int[Secretaria.PERIODO_MAXIMO];
+        this.resultadosAvaliacoes          = new ResultadoAvaliacao[Secretaria.NUMERO_DE_PERIODOS];
+        this.quantidadeEstudantesPresentesPorPeriodo = new int[Secretaria.NUMERO_DE_PERIODOS];
 
         // NOTE:
         // Inicializar a quantidade de estudantes presentes em cada periodo supondo que se mantém igual ao longo do ano,
         // podendo ser alterado posteriormente.
-        for(int i = 0; i < Secretaria.PERIODO_MAXIMO; i++) {
+        for(int i = 0; i < Secretaria.NUMERO_DE_PERIODOS; i++) {
             this.quantidadeEstudantesPresentesPorPeriodo[i] = quantidadeEstudantesPresentes;
         }
 
@@ -44,8 +45,9 @@ public class Escola {
         this.mediaDesempenho               = 0.0f;
         this.estudantes        = new ArrayList<Estudante>(quantidadeEstudantes);
         this.professores       = new ArrayList<Professor>();
+        this.turmas            = new ArrayList<Turma>();
 
-        this.initEstudantes(quantidadeEstudantes);
+        this.testRandomInitEstudantes(quantidadeEstudantes);
 
     }
 
@@ -67,7 +69,7 @@ public class Escola {
         this(secretaria, nome, quantidadeEstudantes, 0);
     }
 
-    private void initEstudantes(int quantidadeEstudantes) {
+    private void testRandomInitEstudantes(int quantidadeEstudantes) {
         String[] nomes = {
             "João", "José", "Antônio", "Francisco", "Carlos",
             "Paulo", "Pedro", "Lucas", "Gabriel", "Miguel",
@@ -93,13 +95,20 @@ public class Escola {
 
         Random r = new Random();
 
-        int maximoDeFaltas = 25;
+        int maximoDeFaltasPorEstudante = 25;
 
         for(int i = 0; i < quantidadeEstudantes; i++) {
             int nomeIndice = r.nextInt(nomes.length);
             String nome = nomes[nomeIndice];
             Estudante e = cadastrarEstudante(nome);
-            e.setFaltas(r.nextInt(maximoDeFaltas + 1));
+
+            for(int j = 0; j < Secretaria.NUMERO_DE_PERIODOS; j++) {
+                int totalFaltas = r.nextInt(maximoDeFaltasPorEstudante + 1);
+                for(int k = 0; k < totalFaltas; k++) {
+                    e.addFalta(j);
+                }
+            }
+
         }
 
     }
@@ -123,6 +132,13 @@ public class Escola {
         return result;
     }
 
+    public Turma cadastrarTurma(String etapaDeEnsino) {
+        Turma t = new Turma(this, etapaDeEnsino);
+        assert this.turmas != null;
+        this.turmas.add(t);
+        return t;
+    }
+
     private float calcularMediaDesempenho(ResultadoAvaliacao[] resultados, int numeroResultadosConsiderados) {
         assert numeroResultadosConsiderados <= resultados.length;
 
@@ -142,45 +158,61 @@ public class Escola {
     }
 
 
-    private ResultadoAvaliacao aplicarAvaliacaoEmPeriodo(Avaliacao avaliacao, int periodo) {
+    private ResultadoAvaliacao aplicarAvaliacaoEmPeriodo(Avaliacao avaliacao, int numeroEstudantesAptos, int periodo) {
         assert 0 <= periodo && periodo <= this.quantidadeEstudantesPresentesPorPeriodo.length - 1;
+        assert numeroEstudantesAptos > 0;
 
         ResultadoAvaliacao resultado = null;
 
-        int quantidadeEstudantesPresentes = this.quantidadeEstudantesPresentesPorPeriodo[periodo];
+        // TODO: get rid of this
+        // int quantidadeEstudantesPresentes = this.quantidadeEstudantesPresentesPorPeriodo[periodo];
 
         Random r = new Random();
 
-        if(quantidadeEstudantesPresentes > 0) {
-            float mediaNotasEstudantes = 0.0f;
+        float mediaNotasEstudantes = 0.0f;
 
-            for(int i = 0; i < quantidadeEstudantesPresentes; i++) {
-                mediaNotasEstudantes += (float)r.nextInt(11);
-            }
-
-            mediaNotasEstudantes /= (float)quantidadeEstudantesPresentes;
-
-            resultado = new ResultadoAvaliacao(avaliacao, mediaNotasEstudantes);
+        for(int i = 0; i < numeroEstudantesAptos; i++) {
+            mediaNotasEstudantes += (float)r.nextInt(11);
         }
+
+        mediaNotasEstudantes /= (float)numeroEstudantesAptos;
+
+        resultado = new ResultadoAvaliacao(avaliacao, mediaNotasEstudantes);
 
         return resultado;
     }
 
-    public void aplicarAvaliacaoAtualizarMedia(Avaliacao avaliacao) {
+    public void aplicarAvaliacao(Avaliacao avaliacao) {
         int numeroAvaliacao = avaliacao.getNumero();
 
-        assert 1 <= numeroAvaliacao && numeroAvaliacao <= Secretaria.PERIODO_MAXIMO;
+        assert 1 <= numeroAvaliacao && numeroAvaliacao <= Secretaria.NUMERO_DE_PERIODOS;
 
         int periodo = numeroAvaliacao - 1;
 
-        ResultadoAvaliacao resultado = this.aplicarAvaliacaoEmPeriodo(avaliacao, periodo);
+        for(Turma turma : this.turmas) {
+            int numeroEstudantesAptos = 0;
+            { // calcularEstudantesAptos
+                for(Estudante e : turma.getEstudantes()) {
+                    if(e.getFaltasPorPeriodo(periodo) < Secretaria.MAXIMO_FALTAS_POR_PERIODO) {
+                        numeroEstudantesAptos++;
+                    }
+                }
+            } // calcularEstudantesAptos
 
-        assert 0 <= periodo && periodo <= this.resultadosAvaliacoes.length - 1;
+            ResultadoAvaliacao resultado = this.aplicarAvaliacaoEmPeriodo(avaliacao, numeroEstudantesAptos, periodo);
 
-        this.resultadosAvaliacoes[periodo] = resultado;
+            assert 0 <= periodo && periodo <= this.resultadosAvaliacoes.length - 1;
 
-        // atualizar a media de desempenho
-        this.mediaDesempenho = this.calcularMediaDesempenho(this.resultadosAvaliacoes, periodo + 1);
+            this.resultadosAvaliacoes[periodo] = resultado;
+
+            // NOTE: atualizar a media de desempenho
+            this.mediaDesempenho = this.calcularMediaDesempenho(this.resultadosAvaliacoes, periodo + 1);
+
+            // NOTE: atualizar contagem de alunos em cada turma que fizeram avaliação
+            // NOTE: Se o número de faltas no período for superior a um determinado limite o estudante não faz avaliação
+            turma.setQuantidadeEstudantesRealizaramAvaliacaoPorPeriodo(periodo, numeroEstudantesAptos);
+        }
+
     }
 
     public void atualizarQuantidadeEstudantesPresentesEmPeriodo(int quantidade, int periodo) {
@@ -252,11 +284,7 @@ public class Escola {
         System.out.println("Estudantes:");
 
         for(Estudante e : this.estudantes) {
-            System.out.println(
-                "  Identificador: " + e.getId() +
-                " | Nome: " + e.getNome() +
-                " | Faltas: " + e.getFaltas()
-            );
+            e.apresentar();
         }
 
         System.out.println();
@@ -265,7 +293,7 @@ public class Escola {
         int totalFaltas = 0;
 
         for(Estudante estudante : this.estudantes) {
-            totalFaltas += estudante.getFaltas();
+            totalFaltas += estudante.getTotalFaltas();
         }
 
         int totalEstudantes = this.estudantes.size();
@@ -277,6 +305,14 @@ public class Escola {
             System.out.println("  Média de faltas por estudante: " + mediaDeFaltasPorEstudante );
         } else {
             System.out.println("  Nenhum estudante cadastrado.");
+        }
+
+        System.out.println();
+        System.out.println("Turmas:");
+
+        for(Turma t : this.turmas) {
+            t.apresentar();
+            System.out.println();
         }
 
         System.out.println();

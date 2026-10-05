@@ -1,3 +1,4 @@
+*.jar
 *.exrc
 test.s
 thing.c

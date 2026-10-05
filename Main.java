@@ -20,7 +20,13 @@ public class Main {
         escolaMunicipalJoaoDaSilva.cadastrarProfessor(profJoao);
         escolaMunicipalJoaoDaSilva.cadastrarProfessor(profHelena);
 
-        for(int i = 1; i <= Secretaria.PERIODO_MAXIMO; i++) {
+        Turma turma1 = escolaMunicipalJoaoDaSilva.cadastrarTurma("Fundamental");
+
+        for(Estudante e : escolaMunicipalJoaoDaSilva.getEstudantes()) {
+            turma1.cadastrarEstudante(e);
+        }
+
+        for(int i = 1; i <= Secretaria.NUMERO_DE_PERIODOS; i++) {
             System.out.printf("=== REALIZANDO AV%d ===\n\n", i);
             secretaria.avaliarEscolas(i);
             System.out.println();

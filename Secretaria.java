@@ -7,7 +7,11 @@ public class Secretaria {
     private int contadorIdProfessor;
     private int contadorIdEscola;
 
-    public static final int PERIODO_MAXIMO = 3;
+    public static final int NUMERO_DE_PERIODOS = 3;
+    public static final int PERIODO_PRIMEIRO = 0;
+    public static final int PERIODO_SEGUNDO = 1;
+    public static final int PERIODO_TERCEIRO = 2;
+    public static final int MAXIMO_FALTAS_POR_PERIODO = 16;
 
     public Secretaria() {
         this.contadorIdProfessor = 0;
@@ -15,9 +19,9 @@ public class Secretaria {
 
         this.escolas = new ArrayList<Escola>();
 
-        this.avaliacoes = new Avaliacao[this.PERIODO_MAXIMO];
+        this.avaliacoes = new Avaliacao[this.NUMERO_DE_PERIODOS];
 
-        for(int i = 0; i < this.PERIODO_MAXIMO; i++) {
+        for(int i = 0; i < this.NUMERO_DE_PERIODOS; i++) {
             int numeroAvaliacao = i + 1;
             String idAvaliacao = "AV" + numeroAvaliacao;
             Avaliacao avaliacao = new Avaliacao(idAvaliacao, numeroAvaliacao);
@@ -31,7 +35,7 @@ public class Secretaria {
         Avaliacao a = this.avaliacoes[numeroAvaliacao - 1];
 
         for(Escola e : this.escolas) {
-            e.aplicarAvaliacaoAtualizarMedia(a);
+            e.aplicarAvaliacao(a);
         }
     }
 
