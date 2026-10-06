@@ -16,15 +16,28 @@ public class Main {
         Professor profJoao = secretaria.cadastrarProfessor("Joao", "Latim");
         Professor profHelena = secretaria.cadastrarProfessor("Helena", "Gramatica");
 
-        escolaMunicipalJoaoDaSilva.cadastrarProfessor(profMarcos);
-        escolaMunicipalJoaoDaSilva.cadastrarProfessor(profJoao);
-        escolaMunicipalJoaoDaSilva.cadastrarProfessor(profHelena);
+        secretaria.cadastrarProfessorEscola(profMarcos.getId(), escolaMunicipalJoaoDaSilva.getId());
+        secretaria.cadastrarProfessorEscola(profJoao.getId(),   escolaMunicipalJoaoDaSilva.getId());
+        secretaria.cadastrarProfessorEscola(profHelena.getId(), escolaMunicipalJoaoDaSilva.getId());
 
         Turma turma1 = escolaMunicipalJoaoDaSilva.cadastrarTurma("Fundamental");
 
         for(Estudante e : escolaMunicipalJoaoDaSilva.getEstudantes()) {
             turma1.cadastrarEstudante(e);
         }
+
+        Escola escola2 = secretaria.cadastrarEscola(
+            "Escola do Prof Raimundo",
+            20,
+            18,
+            "Rua da Rua",
+            "Nowhere"
+        );
+
+        secretaria.cadastrarEstudanteEmEscola(escola2.getId(), "Marcelo");
+
+        secretaria.removerCadastroProfessorEscola(profMarcos.getId(), escolaMunicipalJoaoDaSilva.getId());
+        secretaria.cadastrarProfessorEscola(profMarcos.getId(), escola2.getId());
 
         for(int i = 1; i <= Secretaria.NUMERO_DE_PERIODOS; i++) {
             System.out.printf("=== REALIZANDO AV%d ===\n\n", i);

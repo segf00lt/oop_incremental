@@ -1,8 +1,12 @@
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public class Secretaria {
     private ArrayList<Escola> escolas;
     private Avaliacao[] avaliacoes;
+    private ArrayList<Professor> professores;
+
+    private ArrayList<CadastroProfessorEscola> cadastrosProfessorEscola;
 
     private int contadorIdProfessor;
     private int contadorIdEscola;
@@ -18,6 +22,9 @@ public class Secretaria {
         this.contadorIdEscola = 0;
 
         this.escolas = new ArrayList<Escola>();
+        this.professores = new ArrayList<Professor>();
+
+        this.cadastrosProfessorEscola = new ArrayList<CadastroProfessorEscola>();
 
         this.avaliacoes = new Avaliacao[this.NUMERO_DE_PERIODOS];
 
@@ -76,6 +83,63 @@ public class Secretaria {
         return null;
     }
 
+    public Professor getProfessorPorId(int id) {
+        for(Professor p : this.professores) {
+            if(p.getId() == id) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public void cadastrarProfessorEscola(Professor professor, Escola escola) {
+        CadastroProfessorEscola cadastro = new CadastroProfessorEscola(professor, escola);
+        assert this.cadastrosProfessorEscola != null;
+        this.cadastrosProfessorEscola.add(cadastro);
+    }
+
+    public void cadastrarProfessorEscola(int professorId, int escolaId) {
+        Professor p = this.getProfessorPorId(professorId);
+        assert p != null;
+        Escola e = this.getEscolaPorId(escolaId);
+        assert e != null;
+        this.cadastrarProfessorEscola(p, e);
+    }
+
+    public void removerCadastroProfessorEscola(Professor professor, Escola escola) {
+        int index = 0;
+        for(int i = 0; i < this.cadastrosProfessorEscola.size(); i++) {
+            CadastroProfessorEscola c = this.cadastrosProfessorEscola.get(i);
+            if(c.getProfessor() == professor && c.getEscola() == escola) {
+                index = i;
+                break;
+            }
+        }
+        this.cadastrosProfessorEscola.remove(index);
+    }
+
+    public void removerCadastroProfessorEscola(int professorId, int escolaId) {
+        Professor p = this.getProfessorPorId(professorId);
+        assert p != null;
+        Escola e = this.getEscolaPorId(escolaId);
+        assert e != null;
+        this.removerCadastroProfessorEscola(p, e);
+    }
+
+    public CadastroProfessorEscola[] getCadastrosProfessorEscola(Predicate<CadastroProfessorEscola> condicaoBusca) {
+        ArrayList<CadastroProfessorEscola> tmp = new ArrayList<>();
+
+        for(CadastroProfessorEscola c : this.cadastrosProfessorEscola) {
+            if(condicaoBusca.test(c)) {
+                tmp.add(c);
+            }
+        }
+
+        CadastroProfessorEscola[] cadastros = tmp.toArray(new CadastroProfessorEscola[0]);
+
+        return cadastros;
+    }
+
     public int alocarIdProfessor() {
         int id = this.contadorIdProfessor;
         this.contadorIdProfessor++;
@@ -89,7 +153,9 @@ public class Secretaria {
     }
 
     public Professor cadastrarProfessor(String nome, String area) {
-        return new Professor(this, nome, area);
+        Professor p = new Professor(this, nome, area);
+        this.professores.add(p);
+        return p;
     }
 
     public void cadastrarEstudanteEmEscola(int idEscola, String nomeEstudante) {

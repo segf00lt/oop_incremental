@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Escola {
+    private Secretaria secretaria;
+
     private int id;
     private String nome;
     private String endereco;
@@ -10,7 +12,6 @@ public class Escola {
     private int[] quantidadeEstudantesPresentesPorPeriodo;
     private float mediaDesempenho;
     private ArrayList<Estudante> estudantes;
-    private ArrayList<Professor> professores;
     private ArrayList<Turma> turmas;
 
     private int contadorIdEstudante;
@@ -24,6 +25,8 @@ public class Escola {
         int quantidadeEstudantes,
         int quantidadeEstudantesPresentes
     ) {
+
+        this.secretaria = secretaria;
 
         this.id                            = secretaria.alocarIdEscola();
         this.nome                          = nome;
@@ -44,7 +47,8 @@ public class Escola {
 
         this.mediaDesempenho               = 0.0f;
         this.estudantes        = new ArrayList<Estudante>(quantidadeEstudantes);
-        this.professores       = new ArrayList<Professor>();
+        // nocheckin
+        // this.professores       = new ArrayList<Professor>();
         this.turmas            = new ArrayList<Turma>();
 
         this.testRandomInitEstudantes(quantidadeEstudantes);
@@ -119,11 +123,6 @@ public class Escola {
         Estudante e = new Estudante(id, nome);
         this.estudantes.add(e);
         return e;
-    }
-
-    public void cadastrarProfessor(Professor p) {
-        assert p != null;
-        this.professores.add(p);
     }
 
     public int alocarIdTurma() {
@@ -266,10 +265,17 @@ public class Escola {
         System.out.println("Endereço: " + this.endereco);
         System.out.println("Município/Região: " + this.municipioRegiao);
 
+
+        // TODO: Does this work?
+        CadastroProfessorEscola[] cadastrosProfessorEscola = this.secretaria.getCadastrosProfessorEscola(
+            (c) -> (c.getEscola().id == this.id)
+        );
+
         System.out.println();
-        System.out.println("Quantidade de professores: " + this.professores.size());
+        System.out.println("Quantidade de professores: " + cadastrosProfessorEscola.length);
         System.out.println("Professores: ");
-        for(Professor p : this.professores) {
+        for(CadastroProfessorEscola c : cadastrosProfessorEscola) {
+            Professor p = c.getProfessor();
             System.out.println(
                 "  Identificador: " + p.getId() +
                 " | Nome: " + p.getNome() +
