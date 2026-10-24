@@ -13,7 +13,7 @@ public class Main {
         secretaria.cadastrarEstudanteEmEscola(escolaMunicipalJoaoDaSilva.getId(), "Aurélio");
 
         Professor profMarcos = secretaria.cadastrarProfessor("Marcos", "Matematica");
-        Professor profJoao = secretaria.cadastrarProfessor("Joao", "Latim");
+        Professor profJoao   = secretaria.cadastrarProfessor("Joao", "Latim");
         Professor profHelena = secretaria.cadastrarProfessor("Helena", "Gramatica");
 
         secretaria.cadastrarProfessorEscola(profMarcos.getId(), escolaMunicipalJoaoDaSilva.getId());
