@@ -3,7 +3,7 @@
 public class Professor {
 
     private String nome;
-    private int id;
+    private long id;
     private String area;
 
     public Professor(Secretaria secretaria, String nome, String area) {
@@ -16,7 +16,7 @@ public class Professor {
         return this.nome;
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 

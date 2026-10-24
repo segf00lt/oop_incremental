@@ -4,7 +4,7 @@ import java.util.Random;
 public class Escola {
     private Secretaria secretaria;
 
-    private int id;
+    private long id;
     private String nome;
     private String endereco;
     private String municipioRegiao;
@@ -239,7 +239,7 @@ public class Escola {
         this.municipioRegiao = municipioRegiao;
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 

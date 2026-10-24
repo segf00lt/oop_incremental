@@ -3,38 +3,106 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+TODO
+- Input repl for managing the system
+- DONE Arbitrary number of schools (I think this is already there)
+- DONE Find Escola by nome method
+- DONE Remover Escola method
+- DONE Listar Escolas method
+- DONE All time total Escolas registered
+- DONE Static methods for checking marks between 0 and 10, classificar desempenho, calc percentage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Exercício Incremental 4
 
 
 Dando continuidade ao Sistema de Monitoramento Escolar desenvolvido nas
 atividades anteriores, a Secretaria Municipal de Educação passou a utilizar o
-sistema diretamente no dia a dia. Até então, os dados das escolas eram
-definidos no próprio código do programa. A partir de agora, todas as
-informações deverão ser digitadas pelo usuário durante a execução do sistema. A
-quantidade de escolas da rede não é fixa. Novas unidades podem ser criadas e
-outras podem ser desativadas ao longo do ano, e o sistema deverá armazenar
-quantas escolas forem necessárias, sem limite definido previamente. O mesmo
-vale para as turmas de cada escola e para os professores cadastrados na rede. O
-sistema deverá permitir cadastrar uma nova escola, buscar uma escola pelo nome,
-remover uma escola e listar todas as escolas cadastradas. Ao remover uma
+sistema diretamente no dia a dia.
+
+Até então, os dados das escolas eram definidos no próprio código do programa.
+
+A partir de agora, todas as informações deverão ser digitadas pelo usuário durante a execução do sistema.
+
+A quantidade de escolas da rede não é fixa.
+
+Novas unidades podem ser criadas e outras podem ser desativadas ao longo do ano, e o sistema deverá armazenar
+quantas escolas forem necessárias, sem limite definido previamente.
+
+O mesmo vale para as turmas de cada escola e para os professores cadastrados na rede.
+
+O sistema deverá permitir cadastrar uma nova escola, buscar uma escola pelo nome,
+remover uma escola e listar todas as escolas cadastradas.
+
+Ao remover uma
 escola, suas turmas também deverão deixar de existir, mas os professores devem
-continuar cadastrados na rede. A Secretaria também precisa saber, a qualquer
+continuar cadastrados na rede.
+
+A Secretaria também precisa saber, a qualquer
 momento, quantas escolas já foram cadastradas no sistema desde o início de sua
-execução. Essa informação pertence à rede como um todo e não a uma escola
+execução.
+
+Essa informação pertence à rede como um todo e não a uma escola
 específica, de modo que deve ser consultada sem a necessidade de existir ou de
-se escolher uma escola. Algumas operações do sistema não dependem de uma escola
+se escolher uma escola.
+
+Algumas operações do sistema não dependem de uma escola
 específica e são utilizadas em várias partes do programa verificar se uma nota
 está entre 0 e 10, calcular um percentual a partir de dois valores (por
 exemplo, presentes e matriculados) e classificar um desempenho como
 Insuficiente (abaixo de 5), Regular (de 5 a menos de 7) ou Adequado (7 ou
-mais). Essas operações deverão ser disponibilizadas de forma centralizada e
-poder ser utilizadas sem a criação de objetos. Por fim, o sistema deverá
+mais).
+
+Essas operações deverão ser disponibilizadas de forma centralizada e
+poder ser utilizadas sem a criação de objetos.
+
+Por fim, o sistema deverá
 apresentar um menu de opções, repetido até que o usuário escolha sair, contendo
 no mínimo: cadastrar escola, cadastrar turma em uma escola, cadastrar
 professor, vincular professor a uma escola, registrar notas de avaliação,
 listar escolas com sua frequência, desempenho e classificação, remover escola e
-exibir o total de escolas cadastradas. Todas as funcionalidades desenvolvidas
+exibir o total de escolas cadastradas.
+
+Todas as funcionalidades desenvolvidas
 nas etapas anteriores devem ser mantidas.
+
+
 
 
 

@@ -46,6 +46,11 @@ public class Main {
             secretaria.apresentarEscolas();
         }
 
+        InterfaceUsuario ui = new InterfaceUsuario();
+
+        while(true) {
+            ui.processarComando(secretaria);
+        }
 
     }
 }
