@@ -24,5 +24,10 @@ public class Professor {
         return this.area;
     }
 
+    public void apresentar() {
+        System.out.println("Professor");
+        System.out.println("  Identificador: "+this.id+" | Nome: "+this.nome+" | Area: "+this.area);
+    }
+
 
 }

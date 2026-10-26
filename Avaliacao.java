@@ -10,8 +10,14 @@ public class Avaliacao {
     public String getIdentificador() {
         return this.identificador;
     }
+
     public int getNumero() {
         return this.numero;
+    }
+
+    public void apresentar() {
+        System.out.println("Avaliação");
+        System.out.println("  Identificador: "+this.identificador+" | Número: "+this.numero);
     }
 
 }

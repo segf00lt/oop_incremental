@@ -16,6 +16,15 @@
 
 TODO
 - Input repl for managing the system
+    - TEST cadastrar escola
+    - TEST cadastrar turma em uma escola
+    - TEST cadastrar professor
+    - DONE vincular professor a uma escola
+    - DONE registrar notas de avaliação
+    - DONE listar escolas com sua frequência, desempenho e classificação
+    - DONE remover escola
+    - DONE exibir o total de escolas cadastradas.
+
 - DONE Arbitrary number of schools (I think this is already there)
 - DONE Find Escola by nome method
 - DONE Remover Escola method

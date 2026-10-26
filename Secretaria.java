@@ -74,7 +74,7 @@ public class Secretaria {
         return this.cadastrarEscola(nome, quantidadeEstudantes, 0);
     }
 
-    public int getEscolaIndicePorId(int id) {
+    public int getEscolaIndicePorId(long id) {
         for(int i = 0; i < this.escolas.size(); i++) {
             Escola e = this.escolas.get(i);
             if(e.getId() == id) {
@@ -99,9 +99,28 @@ public class Secretaria {
         return escolas;
     }
 
+    public Professor[] getProfessores() {
+        Professor[] professores = new Professor[this.professores.size()];
+        professores = this.professores.toArray(professores);
+        return professores;
+    }
+
+    public Avaliacao[] getAvaliacoes() {
+        return this.avaliacoes;
+    }
+
     public Professor getProfessorPorId(long id) {
         for(Professor p : this.professores) {
             if(p.getId() == id) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public Professor getProfessorPorNome(String nome) {
+        for(Professor p : this.professores) {
+            if(p.getNome().equals(nome)) {
                 return p;
             }
         }
@@ -121,7 +140,7 @@ public class Secretaria {
         return this.contadorIdEscola;
     }
 
-    public boolean removerEscolaPorId(int id) {
+    public boolean removerEscolaPorId(long id) {
         int indice = this.getEscolaIndicePorId(id);
 
         if(indice >= 0) {

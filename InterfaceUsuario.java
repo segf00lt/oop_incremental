@@ -4,33 +4,152 @@ public class InterfaceUsuario {
 
     Scanner scanner = new Scanner(System.in);
 
-    private final String CADASTRAR = "cadastrar";
-    private final String ESCOLA    = "escola";
-    private final String TURMA     = "turma";
-    private final String PROFESSOR = "professor";
-    private final String REGISTRAR = "registrar";
-    private final String LISTAR    = "listar";
-    private final String REMOVER   = "remover";
-    private final String EXIBIR    = "exibir";
-    private final String TOTAL     = "total";
-    private final String ESCOLAS   = "escolas";
-    private final String NOTA      = "nota";
-    private final String AVALIACAO = "avaliação";
-    private final String VINCULAR  = "vincular";
+    private enum TokenKind {
+        AJUDA("ajuda"),
+        CADASTRAR("cadastrar"),
+        REGISTRAR("registrar"),
+        REMOVER("remover"),
+        LISTAR("listar"),
+        EXIBIR("exibir"),
+        VINCULAR("vincular"),
+        TURMA("turma"),
+        PROFESSORES("professores"),
+        PROFESSOR("professor"),
+        TOTAL("total"),
+        JA("já"),
+        CADASTRADAS("cadastradas"),
+        ESCOLAS("escolas"),
+        ESCOLA("escola"),
+        NOTA("nota"),
+        AVALIACOES("avaliações"),
+        AVALIACAO("avaliação"),
+        STRING,
+        INT,
+        FLOAT,
+        EOL,
+        INVALID;
 
-    private String commandString = "";
-    private String originalCommandString = "";
+        public String s = null;
 
-    private boolean nextKeyword(String keyword) {
-        if(this.commandString.startsWith(keyword)) {
-            this.commandString = this.commandString.substring(keyword.length()).strip();
-            return true;
+        TokenKind() {}
+
+        TokenKind(String s) {
+            this.s = s;
         }
-
-        return false;
     }
 
-    private void help() {
+    private class Token {
+        public TokenKind kind;
+        public String text;
+        public int i;
+        public float f;
+        public long l;
+
+        public Token(TokenKind kind) {
+            this.kind = kind;
+        }
+
+        public Token(TokenKind kind, String text) {
+            this.kind = kind;
+            this.text = text;
+        }
+
+        public Token(TokenKind kind, String text, int i) {
+            this(kind, text);
+            this.i = i;
+        }
+
+        public Token(TokenKind kind, String text, float f) {
+            this(kind, text);
+            this.f = f;
+        }
+
+        public Token(TokenKind kind, String text, long l) {
+            this(kind, text);
+            this.l = l;
+        }
+    }
+
+    private class Lexer {
+        public String commandString = null;
+        public int curPos = 0;
+        public int prevPos = 0;
+
+        public Lexer(String commandString) {
+            this.commandString = commandString;
+        }
+
+        public Token lex() {
+            String curString = this.commandString.substring(this.curPos);
+            int leadingWhitespaceCount = 0;
+            while(leadingWhitespaceCount < curString.length() && Character.isWhitespace(curString.charAt(leadingWhitespaceCount))) {
+                leadingWhitespaceCount++;
+            }
+            this.curPos += leadingWhitespaceCount;
+            curString = this.commandString.substring(this.curPos);
+            String curStringLower = curString.toLowerCase();
+
+            Token result = null;
+
+            if(curString.length() == 0) {
+                result = new Token(TokenKind.EOL);
+                return result;
+            }
+
+            for(TokenKind t : TokenKind.values()) {
+                if(t.s != null && curStringLower.startsWith(t.s)) {
+                    result = new Token(t, t.s);
+                    this.curPos += result.text.length();
+                    return result;
+                }
+            }
+
+            assert result == null;
+
+            Scanner scan = new Scanner(curString);
+
+            if(scan.hasNext("[+-]?(?:\\d+[,.]\\d*|[,.]\\d+)(?:[eE][+-]?\\d+)?")) {
+                String text = scan.next();
+                text = text.replace(',', '.');
+                float f = Float.parseFloat(text);
+                this.curPos += text.length();
+                result = new Token(TokenKind.FLOAT, text, f);
+            } else if(scan.hasNextInt()) {
+                String text = scan.next();
+                int i = Integer.parseInt(text);
+                this.curPos += text.length();
+                result = new Token(TokenKind.INT, text, i);
+            } else if(curString.charAt(0) == '"') {
+                String stringLiteralText = curString.substring(1);
+                int nextQuoteIndex = stringLiteralText.indexOf("\"");
+                if(nextQuoteIndex >= 0) {
+                    stringLiteralText = stringLiteralText.substring(0, nextQuoteIndex);
+                    // NOTE I don't care about " chars in string literals
+                    this.curPos += 2 + stringLiteralText.length();
+                    result = new Token(TokenKind.STRING, stringLiteralText);
+                }
+            }
+
+            if(result == null) {
+                result = new Token(TokenKind.INVALID);
+                this.curPos += curString.length();
+            }
+
+            assert result != null;
+
+            return result;
+        }
+
+        public void save() {
+            this.prevPos = this.curPos;
+        }
+
+        public void unlex() {
+            this.curPos = this.prevPos;
+        }
+    }
+
+    private void ajuda() {
         // TODO
         System.out.println();
     }
@@ -38,40 +157,291 @@ public class InterfaceUsuario {
     public void processarComando(Secretaria secretaria) {
 
         System.out.print(">>> ");
-        this.commandString = scanner.nextLine().toLowerCase();
-        this.originalCommandString = this.commandString;
+        String line = scanner.nextLine();
+        Lexer lexer = new Lexer(line);
+
+        Token t = lexer.lex();
 
         boolean error = false;
 
-        if(this.nextKeyword(CADASTRAR)) {
-            System.out.println(this.commandString);
-            if(this.nextKeyword(ESCOLA)) {
-            } else if(this.nextKeyword(TURMA)) {
-            } else if(this.nextKeyword(PROFESSOR)) {
-            }
-        } else if(this.nextKeyword(REMOVER)) {
-        } else if(this.nextKeyword(VINCULAR)) {
-        } else if(this.nextKeyword(EXIBIR)) {
+        switch(t.kind) {
+            case TokenKind.CADASTRAR: {
+                t = lexer.lex();
+                switch(t.kind) {
+                    case TokenKind.ESCOLA: {
 
-            String[] following = { TOTAL, ESCOLAS };
-            for(String k : following) {
-                if(!this.nextKeyword(k)) {
+                        Token nome = lexer.lex();
+                        Token quantidadeEstudantes = lexer.lex();
+
+                        if(nome.kind != TokenKind.STRING || quantidadeEstudantes.kind != TokenKind.INT) {
+                            error = true;
+                            break;
+                        }
+
+
+                        Token quantidadeEstudantesPresentes = lexer.lex();
+                        if(quantidadeEstudantesPresentes.kind == TokenKind.EOL) {
+                            secretaria.cadastrarEscola(nome.text, quantidadeEstudantes.i);
+                            return;
+                        }
+
+                        if(quantidadeEstudantesPresentes.kind != TokenKind.INT) {
+                            error = true;
+                            break;
+                        }
+
+                        Token endereco = lexer.lex();
+                        if(endereco.kind == TokenKind.EOL) {
+                            secretaria.cadastrarEscola(nome.text, quantidadeEstudantes.i, quantidadeEstudantesPresentes.i);
+                            return;
+                        }
+
+                        Token municipioRegiao = lexer.lex();
+                        if(endereco.kind != TokenKind.STRING || municipioRegiao.kind != TokenKind.STRING) {
+                            error = true;
+                            break;
+                        }
+
+                        secretaria.cadastrarEscola(
+                            nome.text,
+                            quantidadeEstudantes.i,
+                            quantidadeEstudantesPresentes.i,
+                            endereco.text,
+                            municipioRegiao.text
+                        );
+
+                    } break;
+                    case TokenKind.TURMA: {
+                        Token etapaDeEnsino = lexer.lex();
+                        if(etapaDeEnsino.kind != TokenKind.STRING) {
+                            error = true;
+                            break;
+                        }
+                        Token escolaKeyword = lexer.lex();
+                        if(escolaKeyword.kind != TokenKind.ESCOLA) {
+                            error = true;
+                            break;
+                        }
+                        Token nomeEscola = lexer.lex();
+                        if(nomeEscola.kind != TokenKind.STRING) {
+                            error = true;
+                            break;
+                        }
+                        Escola e = secretaria.getEscolaPorNome(nomeEscola.text);
+                        if(e == null) {
+                            System.out.println("erro: escola '"+nomeEscola.text+"' não existe");
+                            return;
+                        }
+                        e.cadastrarTurma(etapaDeEnsino.text);
+                    } break;
+                    case TokenKind.PROFESSOR: {
+                        Token nome = lexer.lex();
+                        Token area = lexer.lex();
+                        if(nome.kind != TokenKind.STRING || area.kind != TokenKind.STRING) {
+                            error = true;
+                            break;
+                        }
+                        secretaria.cadastrarProfessor(nome.text, area.text);
+                    } break;
+                    default:
                     error = true;
                     break;
                 }
-            }
+            } break;
+            case TokenKind.VINCULAR: {
+                lexer.save();
 
-            if(!error) {
-                System.out.println("Total escolas já cadastradas: "+secretaria.getTotalEscolasJaRegistradas());
-            }
+                Token tokenProfessor = lexer.lex();
+                Token tokenNomeProfessor = lexer.lex();
 
-        } else if(this.nextKeyword(LISTAR)) {
-        } else if(this.nextKeyword(REGISTRAR)) {
+                if(tokenProfessor.kind != TokenKind.PROFESSOR || tokenNomeProfessor.kind != TokenKind.STRING) {
+                    error = true;
+                    break;
+                }
+
+                Token tokenEscola = lexer.lex();
+                Token tokenNomeEscola = lexer.lex();
+
+                if(tokenEscola.kind != TokenKind.ESCOLA || tokenNomeEscola.kind != TokenKind.STRING) {
+                    error = true;
+                    break;
+                }
+
+                Professor professor = secretaria.getProfessorPorNome(tokenNomeProfessor.text);
+                if(professor == null) {
+                    System.out.println("erro: professor '"+tokenNomeProfessor.text+"' não existe");
+                    return;
+                }
+
+                Escola escola = secretaria.getEscolaPorNome(tokenNomeEscola.text);
+                if(escola == null) {
+                    System.out.println("erro: escola '"+tokenNomeEscola.text+"' não existe");
+                    return;
+                }
+
+                secretaria.cadastrarProfessorEscola(professor, escola);
+                System.out.println("professor vinculado com sucesso!");
+
+            } break;
+            case TokenKind.REGISTRAR: {
+                lexer.save();
+                Token t1 = lexer.lex();
+                Token t2 = lexer.lex();
+                Token t3 = lexer.lex();
+
+                if(t1.kind != TokenKind.NOTA || t2.kind != TokenKind.AVALIACAO || t3.kind != TokenKind.INT) {
+                    error = true;
+                    break;
+                }
+
+                int numeroAvaliacao = t3.i;
+                t = lexer.lex();
+                float nota = 0;
+                if(t.kind == TokenKind.INT) {
+                    nota = (float)t.i;
+                } else if(t.kind == TokenKind.FLOAT) {
+                    nota = t.f;
+                } else {
+                    error = true;
+                    break;
+                }
+
+                if(numeroAvaliacao <= 0 || Secretaria.NUMERO_DE_PERIODOS < numeroAvaliacao) {
+                    System.out.println("erro: avaliação com número inválido");
+                    return;
+                }
+
+                t = lexer.lex();
+                if(t.kind != TokenKind.ESCOLA) {
+                    error = true;
+                    break;
+                }
+
+                t = lexer.lex();
+                Escola escola = secretaria.getEscolaPorNome(t.text);
+                if(escola == null) {
+                    System.out.println("erro: escola '"+t.text+"' não existe");
+                    return;
+                }
+
+                Avaliacao[] avaliacoes = secretaria.getAvaliacoes();
+                for(Avaliacao a : avaliacoes) {
+                    if(a.getNumero() == numeroAvaliacao) {
+                        escola.registrarNotaAvaliacao(a, nota);
+                    }
+                }
+
+            } break;
+            case TokenKind.LISTAR: {
+                t = lexer.lex();
+
+                if(t.kind == TokenKind.ESCOLAS) {
+                    Escola[] escolas = secretaria.getEscolas();
+                    for(Escola e : escolas) {
+                        float mediaDesempenho = e.getMediaDesempenho();
+                        System.out.println("Escola");
+                        System.out.println("  Identificador: "+e.getId()+
+                            " | Nome: "+e.getNome()+
+                            " | Total Estudantes: "+e.getTotalEstudantes()+
+                            " | Faltas por Estudante: "+e.calcularMediaDeFaltasPorEstudante()+
+                            " | Média de Desempenho: "+mediaDesempenho+" ("+Utilidades.classificarDesempenho(mediaDesempenho)+")"
+                        );
+                    }
+                } else if(t.kind == TokenKind.PROFESSORES) {
+                    Professor[] professores = secretaria.getProfessores();
+                    for(Professor p : professores) {
+                        p.apresentar();
+                    }
+                } else if(t.kind == TokenKind.AVALIACOES) {
+                    Avaliacao[] avaliacoes = secretaria.getAvaliacoes();
+                    for(Avaliacao a : avaliacoes) {
+                        a.apresentar();
+                    }
+                } else {
+                    error = true;
+                    break;
+                }
+
+            } break;
+            case TokenKind.REMOVER: {
+                t = lexer.lex();
+                if(t.kind == TokenKind.ESCOLA) {
+                    t = lexer.lex();
+                    Escola escola = secretaria.getEscolaPorNome(t.text);
+                    if(escola == null) {
+                        System.out.println("erro: escola '"+t.text+"' não existe");
+                        return;
+                    }
+                    secretaria.removerEscolaPorId(escola.getId());
+                } else {
+                    error = true;
+                    break;
+                }
+            } break;
+            case TokenKind.EXIBIR: {
+                t = lexer.lex();
+
+                switch(t.kind) {
+                    case TokenKind.ESCOLA: {
+                        t = lexer.lex();
+                        if(t.kind != TokenKind.STRING) {
+                            error = true;
+                            break;
+                        }
+                        String nome = t.text;
+
+                        Escola escola = secretaria.getEscolaPorNome(nome);
+                        if(escola == null) {
+                            System.out.println("erro: escola '"+nome+"' não existe");
+                            return;
+                        }
+
+                        escola.apresentar();
+
+                    } break;
+                    case TokenKind.PROFESSOR: {
+                        t = lexer.lex();
+                        if(t.kind != TokenKind.STRING) {
+                            error = true;
+                            break;
+                        }
+                        String nome = t.text;
+
+                        Professor professor = secretaria.getProfessorPorNome(nome);
+                        if(professor == null) {
+                            System.out.println("erro: professor '"+nome+"' não existe");
+                            return;
+                        }
+
+                        professor.apresentar();
+
+                    } break;
+                    case TokenKind.TOTAL: {
+                        Token t1 = lexer.lex();
+                        Token t2 = lexer.lex();
+                        Token t3 = lexer.lex();
+                        if(t1.kind != TokenKind.ESCOLAS || t2.kind != TokenKind.JA || t3.kind != TokenKind.CADASTRADAS) {
+                            error = true;
+                            break;
+                        }
+                        System.out.println("Total escolas já cadastradas: "+secretaria.getTotalEscolasJaRegistradas());
+                    } break;
+                    default:
+                    error = true;
+                    break;
+                }
+            } break;
+            case TokenKind.AJUDA: {
+            } break;
+            case TokenKind.INVALID:
+            default: {
+                error = true;
+                System.out.println("Token: "+t.kind+" "+t.text);
+            } break;
         }
 
         if(error) {
-            System.out.println("\'"+this.originalCommandString+"\' não é um commando válido");
-            this.help();
+            System.out.println("erro: comando invalido, digite 'ajuda' para ver menu de opções");
         }
 
     }
