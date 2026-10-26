@@ -150,7 +150,49 @@ public class InterfaceUsuario {
     }
 
     private void ajuda() {
-        // TODO
+        System.out.println("Comandos disponíveis:");
+        System.out.println();
+
+        System.out.println("  ajuda");
+        System.out.println("      Exibe este menu de ajuda.");
+        System.out.println();
+
+        System.out.println("  cadastrar escola \"nome\" INT [INT [\"endereço\" \"município/região\"]]");
+        System.out.println("      Cadastra uma escola, com quantidade total de estudantes,");
+        System.out.println("      quantidade opcional de estudantes presentes e endereço opcional.");
+        System.out.println();
+
+        System.out.println("  cadastrar turma \"etapa de ensino\" escola \"nome da escola\"");
+        System.out.println("      Cadastra uma turma em uma escola existente.");
+        System.out.println();
+
+        System.out.println("  cadastrar professor \"nome\" \"área\"");
+        System.out.println("      Cadastra um professor.");
+        System.out.println();
+
+        System.out.println("  vincular professor \"nome\" escola \"nome da escola\"");
+        System.out.println("      Vincula um professor a uma escola.");
+        System.out.println();
+
+        System.out.println("  registrar nota avaliação INT (INT|FLOAT) escola \"nome\"");
+        System.out.println("      Registra uma nota para uma avaliação de uma escola.");
+        System.out.println();
+
+        System.out.println("  listar escolas");
+        System.out.println("  listar professores");
+        System.out.println("  listar avaliações");
+        System.out.println("      Lista as escolas, os professores ou as avaliações.");
+        System.out.println();
+
+        System.out.println("  remover escola \"nome\"");
+        System.out.println("      Remove uma escola cadastrada.");
+        System.out.println();
+
+        System.out.println("  exibir escola \"nome\"");
+        System.out.println("  exibir professor \"nome\"");
+        System.out.println("  exibir total escolas já cadastradas");
+        System.out.println("      Exibe os dados de uma escola, de um professor ou");
+        System.out.println("      o total de escolas já cadastradas.");
         System.out.println();
     }
 
@@ -432,11 +474,14 @@ public class InterfaceUsuario {
                 }
             } break;
             case TokenKind.AJUDA: {
+                this.ajuda();
             } break;
+            case TokenKind.EOL:
+            break;
             case TokenKind.INVALID:
             default: {
                 error = true;
-                System.out.println("Token: "+t.kind+" "+t.text);
+                // System.out.println("Token: "+t.kind+" "+t.text);
             } break;
         }
 

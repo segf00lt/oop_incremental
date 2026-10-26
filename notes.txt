@@ -15,10 +15,11 @@
 
 
 TODO
-- Input repl for managing the system
-    - TEST cadastrar escola
-    - TEST cadastrar turma em uma escola
-    - TEST cadastrar professor
+- DONE repl help menu
+- DONE Input repl for managing the system
+    - DONE cadastrar escola
+    - DONE cadastrar turma em uma escola
+    - DONE cadastrar professor
     - DONE vincular professor a uma escola
     - DONE registrar notas de avaliação
     - DONE listar escolas com sua frequência, desempenho e classificação

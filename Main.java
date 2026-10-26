@@ -1,7 +1,6 @@
 public class Main {
-    public static void main(String[] args) {
-        Secretaria secretaria = new Secretaria();
 
+    private static void test(Secretaria secretaria) {
         Escola escolaMunicipalJoaoDaSilva = secretaria.cadastrarEscola(
             "Escola Municipal João da Silva",
             20,
@@ -45,6 +44,12 @@ public class Main {
             System.out.println();
             secretaria.apresentarEscolas();
         }
+
+
+    }
+
+    public static void main(String[] args) {
+        Secretaria secretaria = new Secretaria();
 
         InterfaceUsuario ui = new InterfaceUsuario();
 
