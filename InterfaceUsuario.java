@@ -207,10 +207,10 @@ public class InterfaceUsuario {
         boolean error = false;
 
         switch(t.kind) {
-            case TokenKind.CADASTRAR: {
+            case CADASTRAR: {
                 t = lexer.lex();
                 switch(t.kind) {
-                    case TokenKind.ESCOLA: {
+                    case ESCOLA: {
 
                         Token nome = lexer.lex();
                         Token quantidadeEstudantes = lexer.lex();
@@ -253,7 +253,7 @@ public class InterfaceUsuario {
                         );
 
                     } break;
-                    case TokenKind.TURMA: {
+                    case TURMA: {
                         Token etapaDeEnsino = lexer.lex();
                         if(etapaDeEnsino.kind != TokenKind.STRING) {
                             error = true;
@@ -276,7 +276,7 @@ public class InterfaceUsuario {
                         }
                         e.cadastrarTurma(etapaDeEnsino.text);
                     } break;
-                    case TokenKind.PROFESSOR: {
+                    case PROFESSOR: {
                         Token nome = lexer.lex();
                         Token area = lexer.lex();
                         if(nome.kind != TokenKind.STRING || area.kind != TokenKind.STRING) {
@@ -290,7 +290,7 @@ public class InterfaceUsuario {
                     break;
                 }
             } break;
-            case TokenKind.VINCULAR: {
+            case VINCULAR: {
                 lexer.save();
 
                 Token tokenProfessor = lexer.lex();
@@ -325,7 +325,7 @@ public class InterfaceUsuario {
                 System.out.println("professor vinculado com sucesso!");
 
             } break;
-            case TokenKind.REGISTRAR: {
+            case REGISTRAR: {
                 lexer.save();
                 Token t1 = lexer.lex();
                 Token t2 = lexer.lex();
@@ -374,7 +374,7 @@ public class InterfaceUsuario {
                 }
 
             } break;
-            case TokenKind.LISTAR: {
+            case LISTAR: {
                 t = lexer.lex();
 
                 if(t.kind == TokenKind.ESCOLAS) {
@@ -405,7 +405,7 @@ public class InterfaceUsuario {
                 }
 
             } break;
-            case TokenKind.REMOVER: {
+            case REMOVER: {
                 t = lexer.lex();
                 if(t.kind == TokenKind.ESCOLA) {
                     t = lexer.lex();
@@ -420,11 +420,11 @@ public class InterfaceUsuario {
                     break;
                 }
             } break;
-            case TokenKind.EXIBIR: {
+            case EXIBIR: {
                 t = lexer.lex();
 
                 switch(t.kind) {
-                    case TokenKind.ESCOLA: {
+                    case ESCOLA: {
                         t = lexer.lex();
                         if(t.kind != TokenKind.STRING) {
                             error = true;
@@ -441,7 +441,7 @@ public class InterfaceUsuario {
                         escola.apresentar();
 
                     } break;
-                    case TokenKind.PROFESSOR: {
+                    case PROFESSOR: {
                         t = lexer.lex();
                         if(t.kind != TokenKind.STRING) {
                             error = true;
@@ -458,7 +458,7 @@ public class InterfaceUsuario {
                         professor.apresentar();
 
                     } break;
-                    case TokenKind.TOTAL: {
+                    case TOTAL: {
                         Token t1 = lexer.lex();
                         Token t2 = lexer.lex();
                         Token t3 = lexer.lex();
@@ -473,12 +473,12 @@ public class InterfaceUsuario {
                     break;
                 }
             } break;
-            case TokenKind.AJUDA: {
+            case AJUDA: {
                 this.ajuda();
             } break;
-            case TokenKind.EOL:
+            case EOL:
             break;
-            case TokenKind.INVALID:
+            case INVALID:
             default: {
                 error = true;
                 // System.out.println("Token: "+t.kind+" "+t.text);
