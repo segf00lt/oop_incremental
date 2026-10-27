@@ -197,6 +197,7 @@ public class InterfaceUsuario {
     }
 
     public void processarComando(Secretaria secretaria) {
+        this.ajuda();
 
         System.out.print(">>> ");
         String line = scanner.nextLine();
