@@ -1,4 +1,38 @@
+Exercício incremental 5
 
+Dando continuidade ao Sistema de Monitoramento Escolar
+desenvolvido nas atividades anteriores, a Secretaria Municipal de Educação
+passou a registrar também os diretores das unidades escolares e a acompanhar um
+novo modelo de escola na rede.
+
+Para cada estudante, o sistema deverá registrar nome, matrícula, data de
+nascimento, frequência e a turma em que está matriculado. Para cada professor,
+devem ser registrados nome, matrícula, data de nascimento, área de atuação e as
+escolas em que atua. Os diretores são escolhidos entre os professores da rede e
+continuam lecionando. Para cada diretor, além dos dados que já possuía como
+professor, devem ser registradas a escola que dirige e a data em que assumiu o
+cargo.
+
+A Secretaria deseja consultar os dados de qualquer pessoa cadastrada na rede,
+seja estudante, professor ou diretor. Também deseja obter uma listagem única
+com todas essas pessoas, onde cada uma aparece com as informações
+correspondentes ao seu papel.
+
+A rede passou a contar com escolas de tempo integral. Para essas escolas, além
+dos dados já registrados para as demais (nome, matriculados, presentes, turmas,
+professores e avaliações), devem ser informadas a carga horária diária e a
+quantidade de atividades complementares oferecidas. A Secretaria considera
+adequada uma frequência de no mínimo 75% nas escolas regulares e de no mínimo
+85% nas escolas de tempo integral.
+
+O relatório de escolas deverá apresentar todas as unidades da rede, regulares e
+de tempo integral, em uma única listagem. Para cada uma, deve informar a
+frequência, o desempenho e se a frequência está adequada de acordo com o
+critério aplicável a ela.
+
+O menu deverá ser ampliado com as opções: cadastrar escola de tempo integral,
+cadastrar diretor e listar todas as pessoas da rede. Todas as funcionalidades
+desenvolvidas nas etapas anteriores devem ser mantidas.
 
 
 

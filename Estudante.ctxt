@@ -1,13 +1,14 @@
 #BlueJ class context
+#Mon Oct 26 16:18:57 BRT 2026
 comment0.target=Estudante
-comment1.params=matricula\ nome
-comment1.target=Estudante(int,\ java.lang.String)
-comment2.params=faltas
-comment2.target=void\ setFaltas(int)
-comment3.params=
-comment3.target=int\ getFaltas()
-comment4.params=
-comment4.target=int\ getMatricula()
-comment5.params=
-comment5.target=java.lang.String\ getNome()
-numComments=6
+comment1.params=id nome
+comment1.target=Estudante(int, java.lang.String)
+comment2.params=periodo
+comment2.target=void addFalta(int)
+comment3.target=int getTotalFaltas()
+comment4.params=periodo
+comment4.target=int getFaltasPorPeriodo(int)
+comment5.target=int getId()
+comment6.target=java.lang.String getNome()
+comment7.target=void apresentar()
+numComments=8

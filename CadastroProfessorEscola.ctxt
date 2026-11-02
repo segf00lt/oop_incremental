@@ -1,0 +1,8 @@
+#BlueJ class context
+#Mon Oct 26 16:18:57 BRT 2026
+comment0.target=CadastroProfessorEscola
+comment1.params=professor escola
+comment1.target=CadastroProfessorEscola(Professor, Escola)
+comment2.target=Professor getProfessor()
+comment3.target=Escola getEscola()
+numComments=4

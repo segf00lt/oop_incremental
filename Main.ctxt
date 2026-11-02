@@ -1,6 +1,8 @@
 #BlueJ class context
-#Fri Oct 02 16:22:35 BRT 2026
+#Mon Oct 26 16:18:57 BRT 2026
 comment0.target=Main
-comment1.params=args
-comment1.target=void main(java.lang.String[])
-numComments=2
+comment1.params=secretaria
+comment1.target=void test(Secretaria)
+comment2.params=args
+comment2.target=void main(java.lang.String[])
+numComments=3

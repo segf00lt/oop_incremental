@@ -1,11 +1,16 @@
 #BlueJ class context
-#Fri Oct 02 16:22:29 BRT 2026
+#Mon Oct 26 16:18:57 BRT 2026
 comment0.target=Turma
-comment1.params=escola
-comment1.target=Turma(Escola)
+comment1.params=escola etapaDeEnsino
+comment1.target=Turma(Escola, java.lang.String)
 comment2.params=estudante
 comment2.target=void cadastrarEstudante(Estudante)
-comment3.target=int getId()
-comment4.target=java.util.ArrayList getEstudantes()
-comment5.target=int getQuantidadeEstudantesRealizaramAvaliacao()
-numComments=6
+comment3.target=java.lang.String getEtapaDeEnsino()
+comment4.target=int getId()
+comment5.target=java.util.ArrayList getEstudantes()
+comment6.params=periodo
+comment6.target=int getQuantidadeEstudantesRealizaramAvaliacao(int)
+comment7.params=periodo quantidade
+comment7.target=void setQuantidadeEstudantesRealizaramAvaliacaoPorPeriodo(int, int)
+comment8.target=void apresentar()
+numComments=9

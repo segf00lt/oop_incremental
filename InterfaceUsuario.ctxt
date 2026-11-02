@@ -1,0 +1,7 @@
+#BlueJ class context
+#Mon Oct 26 16:18:57 BRT 2026
+comment0.target=InterfaceUsuario
+comment1.target=void ajuda()
+comment2.params=secretaria
+comment2.target=void processarComando(Secretaria)
+numComments=3
