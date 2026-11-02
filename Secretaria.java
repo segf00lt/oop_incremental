@@ -5,10 +5,10 @@ public class Secretaria {
     private ArrayList<Escola> escolas;
     private Avaliacao[] avaliacoes;
     private ArrayList<Professor> professores;
+    private ArrayList<Diretor> diretores;
 
     private ArrayList<CadastroProfessorEscola> cadastrosProfessorEscola;
 
-    private long contadorIdProfessor;
     private long contadorIdEscola;
 
     public static final int NUMERO_DE_PERIODOS = 3;
@@ -18,11 +18,11 @@ public class Secretaria {
     public static final int MAXIMO_FALTAS_POR_PERIODO = 16;
 
     public Secretaria() {
-        this.contadorIdProfessor = 0;
         this.contadorIdEscola = 0;
 
         this.escolas = new ArrayList<Escola>();
         this.professores = new ArrayList<Professor>();
+        this.diretores = new ArrayList<Diretor>();
 
         this.cadastrosProfessorEscola = new ArrayList<CadastroProfessorEscola>();
 
@@ -74,6 +74,20 @@ public class Secretaria {
         return this.cadastrarEscola(nome, quantidadeEstudantes, 0);
     }
 
+    public Escola cadastrarEscolaTempoIntegral(
+        String nome,
+        int quantidadeEstudantes,
+        int quantidadeEstudantesPresentes,
+        String endereco,
+        String municipioRegiao,
+        int cargaHorariaDiaria,
+        int quantidadeAtividadesComplementares
+    ) {
+        EscolaTempoIntegral escola = new EscolaTempoIntegral(this, nome, endereco, municipioRegiao, quantidadeEstudantes, quantidadeEstudantesPresentes, cargaHorariaDiaria, quantidadeAtividadesComplementares);
+        this.escolas.add((Escola)escola);
+        return escola;
+    }
+
     public int getEscolaIndicePorId(long id) {
         for(int i = 0; i < this.escolas.size(); i++) {
             Escola e = this.escolas.get(i);
@@ -107,15 +121,6 @@ public class Secretaria {
 
     public Avaliacao[] getAvaliacoes() {
         return this.avaliacoes;
-    }
-
-    public Professor getProfessorPorId(long id) {
-        for(Professor p : this.professores) {
-            if(p.getId() == id) {
-                return p;
-            }
-        }
-        return null;
     }
 
     public Professor getProfessorPorNome(String nome) {
@@ -157,14 +162,6 @@ public class Secretaria {
         this.cadastrosProfessorEscola.add(cadastro);
     }
 
-    public void cadastrarProfessorEscola(long professorId, long escolaId) {
-        Professor p = this.getProfessorPorId(professorId);
-        assert p != null;
-        Escola e = this.getEscolaPorId(escolaId);
-        assert e != null;
-        this.cadastrarProfessorEscola(p, e);
-    }
-
     public void removerCadastroProfessorEscola(Professor professor, Escola escola) {
         int index = 0;
         for(int i = 0; i < this.cadastrosProfessorEscola.size(); i++) {
@@ -175,14 +172,6 @@ public class Secretaria {
             }
         }
         this.cadastrosProfessorEscola.remove(index);
-    }
-
-    public void removerCadastroProfessorEscola(long professorId, long escolaId) {
-        Professor p = this.getProfessorPorId(professorId);
-        assert p != null;
-        Escola e = this.getEscolaPorId(escolaId);
-        assert e != null;
-        this.removerCadastroProfessorEscola(p, e);
     }
 
     public CadastroProfessorEscola[] getCadastrosProfessorEscola(Predicate<CadastroProfessorEscola> condicaoBusca) {
@@ -199,10 +188,25 @@ public class Secretaria {
         return cadastros;
     }
 
-    public long alocarIdProfessor() {
-        long id = this.contadorIdProfessor;
-        this.contadorIdProfessor++;
-        return id;
+    public Pessoa[] getPessoas() {
+        ArrayList<Pessoa> pessoas = new ArrayList<>();
+
+        for(Diretor d : this.diretores) {
+            pessoas.add((Pessoa)d);
+        }
+
+        for(Professor p : this.professores) {
+            pessoas.add((Pessoa)p);
+        }
+
+        for(Escola e : this.escolas) {
+            for(Estudante estudante : e.getEstudantes()) {
+                pessoas.add((Pessoa)estudante);
+            }
+        }
+
+        Pessoa[] result = new Pessoa[pessoas.size()];
+        return pessoas.toArray(result);
     }
 
     public long alocarIdEscola() {
@@ -211,14 +215,21 @@ public class Secretaria {
         return id;
     }
 
-    public Professor cadastrarProfessor(String nome, String area) {
-        Professor p = new Professor(this, nome, area);
+    public Professor cadastrarProfessor(String nome, String matricula, String dataDeNascimento, String area) {
+        Professor p = new Professor(nome, matricula, dataDeNascimento, area);
         this.professores.add(p);
         return p;
     }
 
-    public void cadastrarEstudanteEmEscola(long idEscola, String nomeEstudante) {
-        Escola escola = this.getEscolaPorId(idEscola);
-        escola.cadastrarEstudante(nomeEstudante);
+    public Diretor cadastrarDiretor(Professor professor, Escola escola, String dataQueAssumiu) {
+        this.removerCadastroProfessorEscola(professor, escola);
+        this.professores.remove(professor);
+        Diretor d = new Diretor(professor, escola, dataQueAssumiu);
+        this.diretores.add(d);
+        return d;
+    }
+
+    public void cadastrarEstudanteEmEscola(Escola escola, String nomeEstudante, String matricula, String dataDeNascimento) {
+        escola.cadastrarEstudante(nomeEstudante, matricula, dataDeNascimento);
     }
 }

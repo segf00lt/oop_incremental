@@ -1,13 +1,11 @@
 import java.util.ArrayList;
 
-public class Estudante {
-    private int id;
-    private String nome;
+public class Estudante extends Pessoa {
     private ArrayList<Falta> faltas;
+    private Turma turma = null;
 
-    public Estudante(int id, String nome) {
-        this.id = id;
-        this.nome = nome;
+    public Estudante(String nome, String matricula, String dataDeNascimento) {
+        super(nome, matricula, dataDeNascimento);
         this.faltas = new ArrayList<Falta>();
     }
 
@@ -32,20 +30,15 @@ public class Estudante {
         return total;
     }
 
-    public int getId() {
-        return this.id;
+    public void setTurma(Turma t) {
+        this.turma = t;
     }
 
-    public String getNome() {
-        return this.nome;
-    }
-
+    @Override
     public void apresentar() {
-        System.out.println(
-            "  Identificador: " + this.id +
-            " | Nome: " + this.nome +
-            " | Faltas: " + this.getTotalFaltas()
-        );
+        System.out.println("Estudante");
+        super.apresentarInterno();
+        System.out.println(" | Turma: "+(this.turma != null ? this.turma.getId() : "N/A")+" | Faltas: "+this.getTotalFaltas());
     }
 
 }

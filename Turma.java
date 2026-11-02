@@ -20,6 +20,7 @@ public class Turma {
     public void cadastrarEstudante(Estudante estudante) {
         assert this.estudantes != null;
         this.estudantes.add(estudante);
+        estudante.setTurma(this);
     }
 
     public String getEtapaDeEnsino() {

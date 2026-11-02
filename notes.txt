@@ -1,3 +1,142 @@
+
+EXERCÍCIO INCREMENTAL 5 — MODIFICAÇÕES NECESSÁRIAS
+
+1\. PESSOAS: ESTUDANTES, PROFESSORES E DIRETORES
+
+ADICIONAR:
+
+\- Criar uma estrutura Pessoa contendo:
+
+- Nome;
+- Matrícula;
+- Data de nascimento.
+
+\- Adaptar a estrutura Estudante para conter:
+
+- Dados de Pessoa;
+- Frequência;
+- Turma em que está matriculado.
+
+\- Adaptar a estrutura Professor para conter:
+
+- Dados de Pessoa;
+- Área de atuação;
+- Escolas em que atua.
+
+\- Criar uma estrutura Diretor contendo:
+
+- Dados de Professor;
+- Escola que dirige;
+- Data em que assumiu o cargo.
+
+\- Criar uma funcionalidade para consultar os dados de qualquer pessoa cadastrada.
+
+\- Criar uma funcionalidade para listar todas as pessoas da rede em uma única listagem, apresentando os dados específicos de cada papel.
+
+ALTERAR:
+
+- Adaptar as funções de cadastro de estudantes e professores para utilizar os novos dados compartilhados de Pessoa.
+- Garantir que um diretor também seja considerado professor.
+- Garantir que um professor possa continuar lecionando após assumir a direção de uma escola.
+- Evitar duplicação dos dados pessoais de um professor que também é diretor.
+
+2\. ESCOLAS DE TEMPO INTEGRAL
+
+ADICIONAR:
+
+\- Criar uma estrutura EscolaTempoIntegral contendo:
+
+- Dados comuns de Escola;
+- Carga horária diária;
+- Quantidade de atividades complementares oferecidas.
+
+\- Criar uma funcionalidade para cadastrar escolas de tempo integral.
+
+ALTERAR:
+
+\- Adaptar o sistema para trabalhar com dois tipos de escola:
+
+- Escola regular;
+- Escola de tempo integral.
+
+\- Garantir que ambas mantenham os dados já existentes:
+
+- Nome;
+- Matriculados;
+- Presentes;
+- Turmas;
+- Professores;
+- Avaliações.
+
+\- Adaptar o cadastro e a manipulação de escolas para reconhecer os dois tipos.
+
+3\. CRITÉRIOS DE FREQUÊNCIA
+
+ALTERAR:
+
+- Modificar a lógica de avaliação da frequência das escolas.
+- Para escolas regulares, considerar frequência adequada quando for maior ou igual a 75%.
+- Para escolas de tempo integral, considerar frequência adequada quando for maior ou igual a 85%.
+- Garantir que o cálculo utilize o critério correspondente ao tipo de escola.
+
+4\. RELATÓRIO DE ESCOLAS
+
+ALTERAR:
+
+- Modificar o relatório existente para incluir escolas regulares e de tempo integral.
+- Para cada escola, apresentar:
+  - Nome;
+  - Frequência;
+  - Desempenho;
+  - Situação da frequência (adequada ou inadequada).
+
+\- Garantir que a situação da frequência seja calculada de acordo com o tipo da escola.
+
+5\. MENU PRINCIPAL
+
+ADICIONAR:
+
+- Opção para cadastrar escola de tempo integral.
+- Opção para cadastrar diretor.
+- Opção para listar todas as pessoas da rede.
+
+ALTERAR:
+
+- Atualizar o menu principal para incluir as novas opções.
+- Atualizar o tratamento das opções selecionadas para chamar as novas funcionalidades.
+
+6\. REMOÇÕES E SUBSTITUIÇÕES
+
+Não há funcionalidades antigas que precisem ser removidas completamente, pois o enunciado exige que todas sejam mantidas.
+
+SUBSTITUIR:
+
+- A lógica que considera apenas estudantes e professores como pessoas cadastradas por uma lógica que também reconheça diretores.
+- A lógica que considera apenas um tipo de escola por uma lógica que reconheça escolas regulares e integrais.
+- O critério fixo de frequência mínima por um critério dependente do tipo de escola.
+- A listagem exclusiva de escolas regulares por uma listagem unificada.
+
+7\. ORDEM RECOMENDADA DE IMPLEMENTAÇÃO
+
+1. Criar Pessoa e adaptar Estudante e Professor.
+2. Criar Diretor e implementar seu cadastro.
+3. Implementar a consulta e a listagem unificada de pessoas.
+4. Criar EscolaTempoIntegral.
+5. Adaptar o armazenamento e o cadastro dos dois tipos de escola.
+6. Modificar o cálculo de frequência adequada.
+7. Adaptar o relatório de escolas.
+8. Atualizar o menu principal.
+9. Testar se todas as funcionalidades dos exercícios anteriores continuam funcionando.
+
+OBSERVAÇÃO IMPORTANTE:
+
+Como o diretor continua sendo professor, evite cadastrar seus dados pessoais duas vezes. O diretor deve reutilizar os dados do professor, mantendo o vínculo com seu cadastro original.
+
+
+
+
+
+
 Exercício incremental 5
 
 Dando continuidade ao Sistema de Monitoramento Escolar

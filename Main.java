@@ -9,15 +9,15 @@ public class Main {
             "São Paulo"
         );
 
-        secretaria.cadastrarEstudanteEmEscola(escolaMunicipalJoaoDaSilva.getId(), "Aurélio");
+        secretaria.cadastrarEstudanteEmEscola(escolaMunicipalJoaoDaSilva, "Aurélio", "123111", "14/07/2002");
 
-        Professor profMarcos = secretaria.cadastrarProfessor("Marcos", "Matematica");
-        Professor profJoao   = secretaria.cadastrarProfessor("Joao", "Latim");
-        Professor profHelena = secretaria.cadastrarProfessor("Helena", "Gramatica");
+        Professor profMarcos = secretaria.cadastrarProfessor("Marcos", "12312312", "13/01/2212", "Matematica");
+        Professor profJoao   = secretaria.cadastrarProfessor("Joao",   "67456", "05/05/2004", "Latim");
+        Professor profHelena = secretaria.cadastrarProfessor("Helena", "5534333", "09/02/393", "Gramatica");
 
-        secretaria.cadastrarProfessorEscola(profMarcos.getId(), escolaMunicipalJoaoDaSilva.getId());
-        secretaria.cadastrarProfessorEscola(profJoao.getId(),   escolaMunicipalJoaoDaSilva.getId());
-        secretaria.cadastrarProfessorEscola(profHelena.getId(), escolaMunicipalJoaoDaSilva.getId());
+        secretaria.cadastrarProfessorEscola(profMarcos, escolaMunicipalJoaoDaSilva);
+        secretaria.cadastrarProfessorEscola(profJoao,   escolaMunicipalJoaoDaSilva);
+        secretaria.cadastrarProfessorEscola(profHelena, escolaMunicipalJoaoDaSilva);
 
         Turma turma1 = escolaMunicipalJoaoDaSilva.cadastrarTurma("Fundamental");
 
@@ -33,10 +33,10 @@ public class Main {
             "Nowhere"
         );
 
-        secretaria.cadastrarEstudanteEmEscola(escola2.getId(), "Marcelo");
+        secretaria.cadastrarEstudanteEmEscola(escola2, "Marcelo", "91881989", "01/01/0003");
 
-        secretaria.removerCadastroProfessorEscola(profMarcos.getId(), escolaMunicipalJoaoDaSilva.getId());
-        secretaria.cadastrarProfessorEscola(profMarcos.getId(), escola2.getId());
+        secretaria.removerCadastroProfessorEscola(profMarcos, escolaMunicipalJoaoDaSilva);
+        secretaria.cadastrarProfessorEscola(profMarcos, escola2);
 
         for(int i = 1; i <= Secretaria.NUMERO_DE_PERIODOS; i++) {
             System.out.printf("=== REALIZANDO AV%d ===\n\n", i);
@@ -49,10 +49,14 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
         Secretaria secretaria = new Secretaria();
+
+        // Main.test(secretaria);
 
         InterfaceUsuario ui = new InterfaceUsuario();
 
+        ui.ajuda();
         while(true) {
             ui.processarComando(secretaria);
         }

@@ -14,7 +14,6 @@ public class Escola {
     private ArrayList<Estudante> estudantes;
     private ArrayList<Turma> turmas;
 
-    private int contadorIdEstudante;
     private int contadorIdTurma;
 
     public Escola(
@@ -42,7 +41,6 @@ public class Escola {
             this.quantidadeEstudantesPresentesPorPeriodo[i] = quantidadeEstudantesPresentes;
         }
 
-        this.contadorIdEstudante = 0;
         this.contadorIdTurma = 0;
 
         this.mediaDesempenho               = 0.0f;
@@ -102,7 +100,7 @@ public class Escola {
         for(int i = 0; i < quantidadeEstudantes; i++) {
             int nomeIndice = r.nextInt(nomes.length);
             String nome = nomes[nomeIndice];
-            Estudante e = cadastrarEstudante(nome);
+            Estudante e = cadastrarEstudante(nome, "1298371298", "31/01/1999");
 
             for(int j = 0; j < Secretaria.NUMERO_DE_PERIODOS; j++) {
                 int totalFaltas = r.nextInt(maximoDeFaltasPorEstudante + 1);
@@ -115,10 +113,8 @@ public class Escola {
 
     }
 
-    public Estudante cadastrarEstudante(String nome) {
-        int id = this.contadorIdEstudante;
-        this.contadorIdEstudante++;
-        Estudante e = new Estudante(id, nome);
+    public Estudante cadastrarEstudante(String nome, String matricula, String dataDeNascimento) {
+        Estudante e = new Estudante(nome, matricula, dataDeNascimento);
         this.estudantes.add(e);
         return e;
     }
@@ -302,6 +298,15 @@ public class Escola {
         return mediaDeFaltasPorEstudante;
     }
 
+    public String classificarMediaDeFaltasPorEstudante() {
+
+        float f = this.calcularMediaDeFaltasPorEstudante() / (4*31);
+        if(1 - f <= 0.75f) {
+            return "Adequada";
+        } else {
+            return "Inadequada";
+        }
+    }
 
     public int calcularTotalFaltas() {
         int totalFaltas = 0;
@@ -339,8 +344,7 @@ public class Escola {
         for(CadastroProfessorEscola c : cadastrosProfessorEscola) {
             Professor p = c.getProfessor();
             System.out.println(
-                "  Identificador: " + p.getId() +
-                " | Nome: " + p.getNome() +
+                "  Nome: " + p.getNome() +
                 " | Area: " + p.getArea()
             );
         }

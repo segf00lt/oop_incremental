@@ -1,32 +1,23 @@
 
 
-public class Professor {
+public class Professor extends Pessoa {
 
-    private String nome;
-    private long id;
     private String area;
 
-    public Professor(Secretaria secretaria, String nome, String area) {
-        this.nome = nome;
+    public Professor(String nome, String matricula, String dataDeNascimento, String area) {
+        super(nome, matricula, dataDeNascimento);
         this.area = area;
-        this.id = secretaria.alocarIdProfessor();
-    }
-
-    public String getNome() {
-        return this.nome;
-    }
-
-    public long getId() {
-        return this.id;
     }
 
     public String getArea() {
         return this.area;
     }
 
+    @Override
     public void apresentar() {
         System.out.println("Professor");
-        System.out.println("  Identificador: "+this.id+" | Nome: "+this.nome+" | Area: "+this.area);
+        super.apresentarInterno();
+        System.out.println(" | Area: "+this.area);
     }
 
 

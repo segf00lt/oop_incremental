@@ -15,6 +15,8 @@ public class InterfaceUsuario {
         TURMA("turma"),
         PROFESSORES("professores"),
         PROFESSOR("professor"),
+        DIRETOR("diretor"),
+        PESSOAS("pessoas"),
         TOTAL("total"),
         JA("já"),
         CADASTRADAS("cadastradas"),
@@ -23,6 +25,7 @@ public class InterfaceUsuario {
         NOTA("nota"),
         AVALIACOES("avaliações"),
         AVALIACAO("avaliação"),
+        INTEGRAL("integral"),
         STRING,
         INT,
         FLOAT,
@@ -149,55 +152,86 @@ public class InterfaceUsuario {
         }
     }
 
-    private void ajuda() {
+    public void ajuda() {
         System.out.println("Comandos disponíveis:");
+        System.out.println();
+        System.out.println("NOTAÇÃO:");
+        System.out.println("  <nome: String>  Argumento obrigatório do tipo String.");
+        System.out.println("  <n: int>        Argumento obrigatório do tipo inteiro.");
+        System.out.println("  <n: float>      Argumento obrigatório do tipo decimal.");
+        System.out.println("  <n: int|float>  Argumento inteiro ou decimal.");
+        System.out.println("  [argumentos]   Argumentos opcionais.");
+        System.out.println("  Strings devem ser delimitadas por aspas duplas.");
+        System.out.println("  Um comando ocupa uma única linha e cada argumento é separado por um espaço.");
         System.out.println();
 
         System.out.println("  ajuda");
         System.out.println("      Exibe este menu de ajuda.");
         System.out.println();
 
-        System.out.println("  cadastrar escola \"nome\" INT [INT [\"endereço\" \"município/região\"]]");
-        System.out.println("      Cadastra uma escola, com quantidade total de estudantes,");
-        System.out.println("      quantidade opcional de estudantes presentes e endereço opcional.");
+        System.out.println("  cadastrar escola <nome: String> <quantidadeEstudantes: int>");
+        System.out.println("      [<quantidadeEstudantesPresentes: int>]");
+        System.out.println("      [<endereco: String> <municipioRegiao: String>]");
+        System.out.println("      Cadastra uma escola.");
+        System.out.println("      Os argumentos opcionais devem ser informados na ordem apresentada.");
         System.out.println();
 
-        System.out.println("  cadastrar turma \"etapa de ensino\" escola \"nome da escola\"");
+        System.out.println("  cadastrar escola integral <nome: String>");
+        System.out.println("      <quantidadeEstudantes: int>");
+        System.out.println("      <quantidadeEstudantesPresentes: int>");
+        System.out.println("      <endereco: String> <municipioRegiao: String>");
+        System.out.println("      <cargaHorariaDiaria: int>");
+        System.out.println("      <quantidadeAtividadesComplementares: int>");
+        System.out.println("      Cadastra uma escola de tempo integral.");
+        System.out.println();
+
+        System.out.println("  cadastrar turma <etapaDeEnsino: String>");
+        System.out.println("      escola <nomeEscola: String>");
         System.out.println("      Cadastra uma turma em uma escola existente.");
         System.out.println();
 
-        System.out.println("  cadastrar professor \"nome\" \"área\"");
+        System.out.println("  cadastrar professor <nome: String> <matricula: String>");
+        System.out.println("      <dataDeNascimento: String> <area: String>");
         System.out.println("      Cadastra um professor.");
         System.out.println();
 
-        System.out.println("  vincular professor \"nome\" escola \"nome da escola\"");
+        System.out.println("  cadastrar diretor <nomeProfessor: String>");
+        System.out.println("      <nomeEscola: String> <dataQueAssumiu: String>");
+        System.out.println("      Cadastra um diretor.");
+        System.out.println();
+
+        System.out.println("  vincular professor <nomeProfessor: String>");
+        System.out.println("      escola <nomeEscola: String>");
         System.out.println("      Vincula um professor a uma escola.");
         System.out.println();
 
-        System.out.println("  registrar nota avaliação INT (INT|FLOAT) escola \"nome\"");
+        System.out.println("  registrar nota avaliação <numeroAvaliacao: int>");
+        System.out.println("      <nota: int|float> escola <nomeEscola: String>");
         System.out.println("      Registra uma nota para uma avaliação de uma escola.");
         System.out.println();
 
         System.out.println("  listar escolas");
         System.out.println("  listar professores");
         System.out.println("  listar avaliações");
-        System.out.println("      Lista as escolas, os professores ou as avaliações.");
+        System.out.println("  listar pessoas");
+        System.out.println("      Lista escolas, professores, avaliações ou pessoas cadastradas.");
         System.out.println();
 
-        System.out.println("  remover escola \"nome\"");
+        System.out.println("  remover escola <nomeEscola: String>");
         System.out.println("      Remove uma escola cadastrada.");
         System.out.println();
 
-        System.out.println("  exibir escola \"nome\"");
-        System.out.println("  exibir professor \"nome\"");
+        System.out.println("  exibir escola <nomeEscola: String>");
+        System.out.println("  exibir professor <nomeProfessor: String>");
         System.out.println("  exibir total escolas já cadastradas");
-        System.out.println("      Exibe os dados de uma escola, de um professor ou");
-        System.out.println("      o total de escolas já cadastradas.");
+        System.out.println("      Exibe os dados solicitados.");
         System.out.println();
     }
 
+
+
     public void processarComando(Secretaria secretaria) {
-        this.ajuda();
+        // this.ajuda();
 
         System.out.print(">>> ");
         String line = scanner.nextLine();
@@ -213,45 +247,88 @@ public class InterfaceUsuario {
                 switch(t.kind) {
                     case ESCOLA: {
 
-                        Token nome = lexer.lex();
-                        Token quantidadeEstudantes = lexer.lex();
+                        t = lexer.lex();
 
-                        if(nome.kind != TokenKind.STRING || quantidadeEstudantes.kind != TokenKind.INT) {
-                            error = true;
-                            break;
+                        if(t.kind == TokenKind.INTEGRAL) {
+                            Token nome = lexer.lex();
+                            Token quantidadeEstudantes = lexer.lex();
+                            Token quantidadeEstudantesPresentes = lexer.lex();
+                            Token endereco = lexer.lex();
+                            Token municipioRegiao = lexer.lex();
+                            Token cargaHorariaDiaria = lexer.lex();
+                            Token quantidadeAtividadesComplementares = lexer.lex();
+
+                            if(nome.kind != TokenKind.STRING || quantidadeEstudantes.kind != TokenKind.INT) {
+                                error = true;
+                                break;
+                            }
+
+                            if(quantidadeEstudantesPresentes.kind != TokenKind.INT) {
+                                error = true;
+                                break;
+                            }
+
+                            if(endereco.kind != TokenKind.STRING || municipioRegiao.kind != TokenKind.STRING) {
+                                error = true;
+                                break;
+                            }
+
+                            if(cargaHorariaDiaria.kind != TokenKind.INT || quantidadeAtividadesComplementares.kind != TokenKind.INT) {
+                                error = true;
+                                break;
+                            }
+
+                            secretaria.cadastrarEscolaTempoIntegral(
+                                nome.text,
+                                quantidadeEstudantes.i,
+                                quantidadeEstudantesPresentes.i,
+                                endereco.text,
+                                municipioRegiao.text,
+                                cargaHorariaDiaria.i,
+                                quantidadeAtividadesComplementares.i
+                            );
+
+                        } else {
+                            Token nome = t;
+                            Token quantidadeEstudantes = lexer.lex();
+
+                            if(nome.kind != TokenKind.STRING || quantidadeEstudantes.kind != TokenKind.INT) {
+                                error = true;
+                                break;
+                            }
+
+
+                            Token quantidadeEstudantesPresentes = lexer.lex();
+                            if(quantidadeEstudantesPresentes.kind == TokenKind.EOL) {
+                                secretaria.cadastrarEscola(nome.text, quantidadeEstudantes.i);
+                                return;
+                            }
+
+                            if(quantidadeEstudantesPresentes.kind != TokenKind.INT) {
+                                error = true;
+                                break;
+                            }
+
+                            Token endereco = lexer.lex();
+                            if(endereco.kind == TokenKind.EOL) {
+                                secretaria.cadastrarEscola(nome.text, quantidadeEstudantes.i, quantidadeEstudantesPresentes.i);
+                                return;
+                            }
+
+                            Token municipioRegiao = lexer.lex();
+                            if(endereco.kind != TokenKind.STRING || municipioRegiao.kind != TokenKind.STRING) {
+                                error = true;
+                                break;
+                            }
+
+                            secretaria.cadastrarEscola(
+                                nome.text,
+                                quantidadeEstudantes.i,
+                                quantidadeEstudantesPresentes.i,
+                                endereco.text,
+                                municipioRegiao.text
+                            );
                         }
-
-
-                        Token quantidadeEstudantesPresentes = lexer.lex();
-                        if(quantidadeEstudantesPresentes.kind == TokenKind.EOL) {
-                            secretaria.cadastrarEscola(nome.text, quantidadeEstudantes.i);
-                            return;
-                        }
-
-                        if(quantidadeEstudantesPresentes.kind != TokenKind.INT) {
-                            error = true;
-                            break;
-                        }
-
-                        Token endereco = lexer.lex();
-                        if(endereco.kind == TokenKind.EOL) {
-                            secretaria.cadastrarEscola(nome.text, quantidadeEstudantes.i, quantidadeEstudantesPresentes.i);
-                            return;
-                        }
-
-                        Token municipioRegiao = lexer.lex();
-                        if(endereco.kind != TokenKind.STRING || municipioRegiao.kind != TokenKind.STRING) {
-                            error = true;
-                            break;
-                        }
-
-                        secretaria.cadastrarEscola(
-                            nome.text,
-                            quantidadeEstudantes.i,
-                            quantidadeEstudantesPresentes.i,
-                            endereco.text,
-                            municipioRegiao.text
-                        );
 
                     } break;
                     case TURMA: {
@@ -279,12 +356,33 @@ public class InterfaceUsuario {
                     } break;
                     case PROFESSOR: {
                         Token nome = lexer.lex();
+                        Token matricula = lexer.lex();
+                        Token dataDeNascimento = lexer.lex();
                         Token area = lexer.lex();
-                        if(nome.kind != TokenKind.STRING || area.kind != TokenKind.STRING) {
+                        if(nome.kind != TokenKind.STRING || matricula.kind != TokenKind.STRING || dataDeNascimento.kind != TokenKind.STRING || area.kind != TokenKind.STRING) {
                             error = true;
                             break;
                         }
-                        secretaria.cadastrarProfessor(nome.text, area.text);
+                        secretaria.cadastrarProfessor(nome.text, matricula.text, dataDeNascimento.text, area.text);
+                    } break;
+                    case DIRETOR: {
+                        Token nomeProfessor = lexer.lex();
+                        Token nomeEscola = lexer.lex();
+                        Token dataQueAssumiu = lexer.lex();
+                        if(nomeProfessor.kind != TokenKind.STRING || nomeEscola.kind != TokenKind.STRING || dataQueAssumiu.kind != TokenKind.STRING) {
+                            error = true;
+                            break;
+                        }
+                        Professor p = secretaria.getProfessorPorNome(nomeProfessor.text);
+                        if(p == null) {
+                            System.out.println("erro: professor '"+nomeProfessor.text+"' não existe");
+                        }
+                        Escola escola = secretaria.getEscolaPorNome(nomeEscola.text);
+                        if(escola == null) {
+                            System.out.println("erro: escola '"+nomeEscola.text+"' não existe");
+                            return;
+                        }
+                        secretaria.cadastrarDiretor(p, escola, dataQueAssumiu.text);
                     } break;
                     default:
                     error = true;
@@ -382,12 +480,14 @@ public class InterfaceUsuario {
                     Escola[] escolas = secretaria.getEscolas();
                     for(Escola e : escolas) {
                         float mediaDesempenho = e.getMediaDesempenho();
+
                         System.out.println("Escola");
                         System.out.println("  Identificador: "+e.getId()+
                             " | Nome: "+e.getNome()+
-                            " | Total Estudantes: "+e.getTotalEstudantes()+
-                            " | Faltas por Estudante: "+e.calcularMediaDeFaltasPorEstudante()+
-                            " | Média de Desempenho: "+mediaDesempenho+" ("+Utilidades.classificarDesempenho(mediaDesempenho)+")"
+                            " | Total estudantes: "+e.getTotalEstudantes()+
+                            " | Faltas por estudante: "+e.calcularMediaDeFaltasPorEstudante()+
+                            " | Média de desempenho: "+mediaDesempenho+" ("+Utilidades.classificarDesempenho(mediaDesempenho)+")"+
+                            " | Média de faltas por estudante: "+e.calcularMediaDeFaltasPorEstudante()+" ("+e.classificarMediaDeFaltasPorEstudante()+")"
                         );
                     }
                 } else if(t.kind == TokenKind.PROFESSORES) {
@@ -399,6 +499,11 @@ public class InterfaceUsuario {
                     Avaliacao[] avaliacoes = secretaria.getAvaliacoes();
                     for(Avaliacao a : avaliacoes) {
                         a.apresentar();
+                    }
+                } else if(t.kind == TokenKind.PESSOAS) {
+                    Pessoa[] pessoas = secretaria.getPessoas();
+                    for(Pessoa p : pessoas) {
+                        p.apresentar();
                     }
                 } else {
                     error = true;
