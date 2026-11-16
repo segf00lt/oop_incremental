@@ -15,16 +15,20 @@ public class InterfaceUsuario {
         TURMA("turma"),
         PROFESSORES("professores"),
         PROFESSOR("professor"),
+        ESTUDANTE("estudante"),
         DIRETOR("diretor"),
         PESSOAS("pessoas"),
+        PESSOA("pessoa"),
         TOTAL("total"),
-        JA("já"),
+        JA("ja"),
+        PERIODO("periodo"),
+        FALTA("falta"),
         CADASTRADAS("cadastradas"),
         ESCOLAS("escolas"),
         ESCOLA("escola"),
         NOTA("nota"),
-        AVALIACOES("avaliações"),
-        AVALIACAO("avaliação"),
+        AVALIACOES("avaliacoes"),
+        AVALIACAO("avaliacao"),
         INTEGRAL("integral"),
         STRING,
         INT,
@@ -190,13 +194,15 @@ public class InterfaceUsuario {
         System.out.println("      Cadastra uma turma em uma escola existente.");
         System.out.println();
 
-        System.out.println("  cadastrar professor <nome: String> <matricula: String>");
-        System.out.println("      <dataDeNascimento: String> <area: String>");
+        System.out.println("  cadastrar professor <nome: String> <dataDeNascimento: String> <area: String>");
         System.out.println("      Cadastra um professor.");
         System.out.println();
 
-        System.out.println("  cadastrar diretor <nomeProfessor: String>");
-        System.out.println("      <nomeEscola: String> <dataQueAssumiu: String>");
+        System.out.println("  cadastrar estudante <nome: String> <dataDeNascimento: String> escola <nomeEscola: String>");
+        System.out.println("      Cadastra um estudante em uma escola.");
+        System.out.println();
+
+        System.out.println("  cadastrar diretor <nomeProfessor: String> <nomeEscola: String> <dataQueAssumiu: String>");
         System.out.println("      Cadastra um diretor.");
         System.out.println();
 
@@ -205,16 +211,20 @@ public class InterfaceUsuario {
         System.out.println("      Vincula um professor a uma escola.");
         System.out.println();
 
-        System.out.println("  registrar nota avaliação <numeroAvaliacao: int>");
+        System.out.println("  registrar nota avaliacao <numeroAvaliacao: int>");
         System.out.println("      <nota: int|float> escola <nomeEscola: String>");
-        System.out.println("      Registra uma nota para uma avaliação de uma escola.");
+        System.out.println("      Registra uma nota para uma avaliacao de uma escola.");
+        System.out.println();
+
+        System.out.println("  registrar falta estudante <nome: String> escola <nomeEscola: String> periodo <numeroPeriodo: int>");
+        System.out.println("      Registra uma falta para um estudante em uma escola dentro de um dos 3 periodos (0, 1 ou 2).");
         System.out.println();
 
         System.out.println("  listar escolas");
         System.out.println("  listar professores");
-        System.out.println("  listar avaliações");
+        System.out.println("  listar avaliacoes");
         System.out.println("  listar pessoas");
-        System.out.println("      Lista escolas, professores, avaliações ou pessoas cadastradas.");
+        System.out.println("      Lista escolas, professores, avaliacoes ou pessoas cadastradas.");
         System.out.println();
 
         System.out.println("  remover escola <nomeEscola: String>");
@@ -223,7 +233,8 @@ public class InterfaceUsuario {
 
         System.out.println("  exibir escola <nomeEscola: String>");
         System.out.println("  exibir professor <nomeProfessor: String>");
-        System.out.println("  exibir total escolas já cadastradas");
+        System.out.println("  exibir pessoa <nomePessoa: String>"); // nocheckin
+        System.out.println("  exibir total escolas ja cadastradas");
         System.out.println("      Exibe os dados solicitados.");
         System.out.println();
     }
@@ -356,14 +367,34 @@ public class InterfaceUsuario {
                     } break;
                     case PROFESSOR: {
                         Token nome = lexer.lex();
-                        Token matricula = lexer.lex();
                         Token dataDeNascimento = lexer.lex();
                         Token area = lexer.lex();
-                        if(nome.kind != TokenKind.STRING || matricula.kind != TokenKind.STRING || dataDeNascimento.kind != TokenKind.STRING || area.kind != TokenKind.STRING) {
+                        if(nome.kind != TokenKind.STRING || dataDeNascimento.kind != TokenKind.STRING || area.kind != TokenKind.STRING) {
                             error = true;
                             break;
                         }
-                        secretaria.cadastrarProfessor(nome.text, matricula.text, dataDeNascimento.text, area.text);
+                        secretaria.cadastrarProfessor(nome.text, dataDeNascimento.text, area.text);
+                    } break;
+                    case ESTUDANTE: {
+                        Token nome = lexer.lex();
+                        Token dataDeNascimento = lexer.lex();
+                        if(nome.kind != TokenKind.STRING || dataDeNascimento.kind != TokenKind.STRING) {
+                            error = true;
+                            break;
+                        }
+
+                        if(lexer.lex().kind != TokenKind.ESCOLA) {
+                            error = true;
+                            break;
+                        }
+
+                        Token nomeEscola = lexer.lex();
+                        Escola escola = secretaria.getEscolaPorNome(nomeEscola.text);
+                        if(escola == null) {
+                            System.out.println("erro: escola '"+nomeEscola.text+"' não existe");
+                            return;
+                        }
+                        escola.cadastrarEstudante(nome.text, dataDeNascimento.text);
                     } break;
                     case DIRETOR: {
                         Token nomeProfessor = lexer.lex();
@@ -427,49 +458,115 @@ public class InterfaceUsuario {
             case REGISTRAR: {
                 lexer.save();
                 Token t1 = lexer.lex();
-                Token t2 = lexer.lex();
-                Token t3 = lexer.lex();
 
-                if(t1.kind != TokenKind.NOTA || t2.kind != TokenKind.AVALIACAO || t3.kind != TokenKind.INT) {
-                    error = true;
-                    break;
-                }
+                if(t1.kind == TokenKind.NOTA) {
 
-                int numeroAvaliacao = t3.i;
-                t = lexer.lex();
-                float nota = 0;
-                if(t.kind == TokenKind.INT) {
-                    nota = (float)t.i;
-                } else if(t.kind == TokenKind.FLOAT) {
-                    nota = t.f;
-                } else {
-                    error = true;
-                    break;
-                }
+                    Token t2 = lexer.lex();
+                    Token t3 = lexer.lex();
 
-                if(numeroAvaliacao <= 0 || Secretaria.NUMERO_DE_PERIODOS < numeroAvaliacao) {
-                    System.out.println("erro: avaliação com número inválido");
-                    return;
-                }
-
-                t = lexer.lex();
-                if(t.kind != TokenKind.ESCOLA) {
-                    error = true;
-                    break;
-                }
-
-                t = lexer.lex();
-                Escola escola = secretaria.getEscolaPorNome(t.text);
-                if(escola == null) {
-                    System.out.println("erro: escola '"+t.text+"' não existe");
-                    return;
-                }
-
-                Avaliacao[] avaliacoes = secretaria.getAvaliacoes();
-                for(Avaliacao a : avaliacoes) {
-                    if(a.getNumero() == numeroAvaliacao) {
-                        escola.registrarNotaAvaliacao(a, nota);
+                    if(t1.kind != TokenKind.NOTA || t2.kind != TokenKind.AVALIACAO || t3.kind != TokenKind.INT) {
+                        error = true;
+                        break;
                     }
+
+                    int numeroAvaliacao = t3.i;
+                    t = lexer.lex();
+                    float nota = 0;
+                    if(t.kind == TokenKind.INT) {
+                        nota = (float)t.i;
+                    } else if(t.kind == TokenKind.FLOAT) {
+                        nota = t.f;
+                    } else {
+                        error = true;
+                        break;
+                    }
+
+                    // TODO 16/11/26: The way these periodos work is really weird
+                    if(numeroAvaliacao <= 0 || Secretaria.NUMERO_DE_PERIODOS < numeroAvaliacao) {
+                        System.out.println("erro: avaliacao com número inválido");
+                        return;
+                    }
+
+                    t = lexer.lex();
+                    if(t.kind != TokenKind.ESCOLA) {
+                        error = true;
+                        break;
+                    }
+
+                    t = lexer.lex();
+                    Escola escola = secretaria.getEscolaPorNome(t.text);
+                    if(escola == null) {
+                        System.out.println("erro: escola '"+t.text+"' não existe");
+                        return;
+                    }
+
+                    Avaliacao[] avaliacoes = secretaria.getAvaliacoes();
+                    for(Avaliacao a : avaliacoes) {
+                        if(a.getNumero() == numeroAvaliacao) {
+                            escola.registrarNotaAvaliacao(a, nota);
+                        }
+                    }
+                } else if(t1.kind == TokenKind.FALTA) {
+                    if(lexer.lex().kind != TokenKind.ESTUDANTE) {
+                        error = true;
+                        break;
+                    }
+
+                    Token nomeEstudante = lexer.lex();
+                    if(nomeEstudante.kind != TokenKind.STRING) {
+                        error = true;
+                        break;
+                    }
+
+                    if(lexer.lex().kind != TokenKind.ESCOLA) {
+                        error = true;
+                        break;
+                    }
+
+                    Token nomeEscola = lexer.lex();
+                    if(nomeEscola.kind != TokenKind.STRING) {
+                        error = true;
+                        break;
+                    }
+
+                    if(lexer.lex().kind != TokenKind.PERIODO) {
+                        error = true;
+                        break;
+                    }
+
+                    Token numeroPeriodo = lexer.lex();
+                    if(numeroPeriodo.kind != TokenKind.INT) {
+                        error = true;
+                        break;
+                    }
+
+                    Escola escola = secretaria.getEscolaPorNome(nomeEscola.text);
+                    if(escola == null) {
+                        System.out.println("erro: escola '"+nomeEscola.text+"' não existe");
+                        return;
+                    }
+
+                    Estudante estudante = null;
+
+                    for(Estudante e : escola.getEstudantes()) {
+                        if(e.getNome().equals(nomeEstudante.text)) {
+                            estudante = e;
+                            break;
+                        }
+                    }
+
+                    if(estudante == null) {
+                        System.out.println("erro: estudante '"+nomeEstudante.text+"' não existe");
+                        return;
+                    }
+
+                    if(Secretaria.numeroPeriodoValido(numeroPeriodo.i) == false) {
+                        System.out.println("erro: periodo invalido");
+                        return;
+                    }
+
+                    estudante.addFalta(numeroPeriodo.i);
+
                 }
 
             } break;
@@ -564,6 +661,31 @@ public class InterfaceUsuario {
                         professor.apresentar();
 
                     } break;
+                    case PESSOA: {
+                        t = lexer.lex();
+                        if(t.kind != TokenKind.STRING) {
+                            error = true;
+                            break;
+                        }
+                        String nome = t.text;
+
+                        Pessoa[] pessoas = secretaria.getPessoas();
+
+                        Pessoa pessoaBuscada = null;
+                        for(Pessoa p : pessoas) {
+                            if(p.getNome().equals(nome)) {
+                                pessoaBuscada = p;
+                                break;
+                            }
+                        }
+
+                        if(pessoaBuscada == null) {
+                            System.out.println("erro: pessa '"+nome+"' não existe");
+                            return;
+                        }
+
+                        pessoaBuscada.apresentar();
+                    } break;
                     case TOTAL: {
                         Token t1 = lexer.lex();
                         Token t2 = lexer.lex();
@@ -572,7 +694,7 @@ public class InterfaceUsuario {
                             error = true;
                             break;
                         }
-                        System.out.println("Total escolas já cadastradas: "+secretaria.getTotalEscolasJaRegistradas());
+                        System.out.println("Total escolas ja cadastradas: "+secretaria.getTotalEscolasJaRegistradas());
                     } break;
                     default:
                     error = true;

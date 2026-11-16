@@ -36,12 +36,12 @@ public class Turma {
     }
 
     public int getQuantidadeEstudantesRealizaramAvaliacao(int periodo) {
-        assert 0 <= periodo && periodo <= Secretaria.NUMERO_DE_PERIODOS - 1;
+        assert Secretaria.numeroPeriodoValido(periodo);
         return this.quantidadeEstudantesRealizaramAvaliacao[periodo];
     }
 
     public void setQuantidadeEstudantesRealizaramAvaliacaoPorPeriodo(int periodo, int quantidade) {
-        assert 0 <= periodo && periodo <= Secretaria.NUMERO_DE_PERIODOS - 1;
+        assert Secretaria.numeroPeriodoValido(periodo);
 
         this.quantidadeEstudantesRealizaramAvaliacao[periodo] = quantidade;
     }

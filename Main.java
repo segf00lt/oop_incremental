@@ -9,11 +9,11 @@ public class Main {
             "São Paulo"
         );
 
-        secretaria.cadastrarEstudanteEmEscola(escolaMunicipalJoaoDaSilva, "Aurélio", "123111", "14/07/2002");
+        secretaria.cadastrarEstudanteEmEscola(escolaMunicipalJoaoDaSilva, "Aurélio", "14/07/2002");
 
-        Professor profMarcos = secretaria.cadastrarProfessor("Marcos", "12312312", "13/01/2212", "Matematica");
-        Professor profJoao   = secretaria.cadastrarProfessor("Joao",   "67456", "05/05/2004", "Latim");
-        Professor profHelena = secretaria.cadastrarProfessor("Helena", "5534333", "09/02/393", "Gramatica");
+        Professor profMarcos = secretaria.cadastrarProfessor("Marcos", "13/01/2212", "Matematica");
+        Professor profJoao   = secretaria.cadastrarProfessor("Joao",   "05/05/2004", "Latim");
+        Professor profHelena = secretaria.cadastrarProfessor("Helena", "09/02/393", "Gramatica");
 
         secretaria.cadastrarProfessorEscola(profMarcos, escolaMunicipalJoaoDaSilva);
         secretaria.cadastrarProfessorEscola(profJoao,   escolaMunicipalJoaoDaSilva);
@@ -33,7 +33,7 @@ public class Main {
             "Nowhere"
         );
 
-        secretaria.cadastrarEstudanteEmEscola(escola2, "Marcelo", "91881989", "01/01/0003");
+        secretaria.cadastrarEstudanteEmEscola(escola2, "Marcelo", "01/01/0003");
 
         secretaria.removerCadastroProfessorEscola(profMarcos, escolaMunicipalJoaoDaSilva);
         secretaria.cadastrarProfessorEscola(profMarcos, escola2);

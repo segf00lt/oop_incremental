@@ -3,22 +3,24 @@ import java.util.function.Predicate;
 
 public class Secretaria {
     private ArrayList<Escola> escolas;
-    private Avaliacao[] avaliacoes;
     private ArrayList<Professor> professores;
     private ArrayList<Diretor> diretores;
 
     private ArrayList<CadastroProfessorEscola> cadastrosProfessorEscola;
 
     private long contadorIdEscola;
+    private long contadorMatriculaPessoa;
 
     public static final int NUMERO_DE_PERIODOS = 3;
     public static final int PERIODO_PRIMEIRO = 0;
     public static final int PERIODO_SEGUNDO = 1;
     public static final int PERIODO_TERCEIRO = 2;
     public static final int MAXIMO_FALTAS_POR_PERIODO = 16;
+    private Avaliacao[] avaliacoes = new Avaliacao[this.NUMERO_DE_PERIODOS];
 
     public Secretaria() {
         this.contadorIdEscola = 0;
+        this.contadorMatriculaPessoa = 0;
 
         this.escolas = new ArrayList<Escola>();
         this.professores = new ArrayList<Professor>();
@@ -26,20 +28,26 @@ public class Secretaria {
 
         this.cadastrosProfessorEscola = new ArrayList<CadastroProfessorEscola>();
 
-        this.avaliacoes = new Avaliacao[this.NUMERO_DE_PERIODOS];
-
         for(int i = 0; i < this.NUMERO_DE_PERIODOS; i++) {
-            int numeroAvaliacao = i + 1;
+            int numeroAvaliacao = i;
             String idAvaliacao = "AV" + numeroAvaliacao;
             Avaliacao avaliacao = new Avaliacao(idAvaliacao, numeroAvaliacao);
             this.avaliacoes[i] = avaliacao;
         }
     }
 
-    public void avaliarEscolas(int numeroAvaliacao) {
-        assert 1 <= numeroAvaliacao && numeroAvaliacao <= this.avaliacoes.length;
+    public static boolean numeroPeriodoValido(int n) {
+        return 0 <= n && n <= Secretaria.NUMERO_DE_PERIODOS - 1;
+    }
 
-        Avaliacao a = this.avaliacoes[numeroAvaliacao - 1];
+    public static boolean numeroAvaliacaoValido(int n) {
+        return 0 <= n && n <= Secretaria.NUMERO_DE_PERIODOS - 1;
+    }
+
+    public void avaliarEscolas(int numeroAvaliacao) {
+        assert this.numeroAvaliacaoValido(numeroAvaliacao);
+
+        Avaliacao a = this.avaliacoes[numeroAvaliacao];
 
         for(Escola e : this.escolas) {
             e.aplicarAvaliacao(a);
@@ -215,7 +223,14 @@ public class Secretaria {
         return id;
     }
 
-    public Professor cadastrarProfessor(String nome, String matricula, String dataDeNascimento, String area) {
+    public long alocarMatriculaPessoa() {
+        long matricula = this.contadorMatriculaPessoa;
+        this.contadorMatriculaPessoa++;
+        return matricula;
+    }
+
+    public Professor cadastrarProfessor(String nome, String dataDeNascimento, String area) {
+        long matricula = this.alocarMatriculaPessoa();
         Professor p = new Professor(nome, matricula, dataDeNascimento, area);
         this.professores.add(p);
         return p;
@@ -229,7 +244,7 @@ public class Secretaria {
         return d;
     }
 
-    public void cadastrarEstudanteEmEscola(Escola escola, String nomeEstudante, String matricula, String dataDeNascimento) {
-        escola.cadastrarEstudante(nomeEstudante, matricula, dataDeNascimento);
+    public void cadastrarEstudanteEmEscola(Escola escola, String nomeEstudante, String dataDeNascimento) {
+        escola.cadastrarEstudante(nomeEstudante, dataDeNascimento);
     }
 }

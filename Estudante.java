@@ -4,7 +4,7 @@ public class Estudante extends Pessoa {
     private ArrayList<Falta> faltas;
     private Turma turma = null;
 
-    public Estudante(String nome, String matricula, String dataDeNascimento) {
+    public Estudante(String nome, long matricula, String dataDeNascimento) {
         super(nome, matricula, dataDeNascimento);
         this.faltas = new ArrayList<Falta>();
     }

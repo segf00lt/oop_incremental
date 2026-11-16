@@ -1,4 +1,38 @@
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+TODO 16/11/26
+
+- DONE Cadastrar estudante
+- DONE Mudar matricula das Pessoas para inteiro gerado pelo sistema
+- DONE Exibir pessoa buscando pela matricula
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 EXERCÍCIO INCREMENTAL 5 — MODIFICAÇÕES NECESSÁRIAS
 
 1\. PESSOAS: ESTUDANTES, PROFESSORES E DIRETORES

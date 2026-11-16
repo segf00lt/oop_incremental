@@ -1,10 +1,10 @@
 
 public class Pessoa {
     protected String nome;
-    protected String matricula;
+    protected long matricula;
     protected String dataDeNascimento;
 
-    public Pessoa(String nome, String matricula, String dataDeNascimento) {
+    public Pessoa(String nome, long matricula, String dataDeNascimento) {
         this.nome             = nome;
         this.matricula        = matricula;
         this.dataDeNascimento = dataDeNascimento;
@@ -14,7 +14,7 @@ public class Pessoa {
         return this.nome;
     }
 
-    public String getMatricula() {
+    public long getMatricula() {
         return this.matricula;
     }
 

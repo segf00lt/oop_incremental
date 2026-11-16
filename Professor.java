@@ -4,7 +4,7 @@ public class Professor extends Pessoa {
 
     private String area;
 
-    public Professor(String nome, String matricula, String dataDeNascimento, String area) {
+    public Professor(String nome, long matricula, String dataDeNascimento, String area) {
         super(nome, matricula, dataDeNascimento);
         this.area = area;
     }

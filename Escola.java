@@ -69,7 +69,7 @@ public class Escola {
         this(secretaria, nome, quantidadeEstudantes, 0);
     }
 
-    private void testRandomInitEstudantes(int quantidadeEstudantes) {
+    public void testRandomInitEstudantes(int quantidadeEstudantes) {
         String[] nomes = {
             "João", "José", "Antônio", "Francisco", "Carlos",
             "Paulo", "Pedro", "Lucas", "Gabriel", "Miguel",
@@ -100,7 +100,7 @@ public class Escola {
         for(int i = 0; i < quantidadeEstudantes; i++) {
             int nomeIndice = r.nextInt(nomes.length);
             String nome = nomes[nomeIndice];
-            Estudante e = cadastrarEstudante(nome, "1298371298", "31/01/1999");
+            Estudante e = this.cadastrarEstudante(nome, "31/01/1999");
 
             for(int j = 0; j < Secretaria.NUMERO_DE_PERIODOS; j++) {
                 int totalFaltas = r.nextInt(maximoDeFaltasPorEstudante + 1);
@@ -113,7 +113,8 @@ public class Escola {
 
     }
 
-    public Estudante cadastrarEstudante(String nome, String matricula, String dataDeNascimento) {
+    public Estudante cadastrarEstudante(String nome, String dataDeNascimento) {
+        long matricula = this.secretaria.alocarMatriculaPessoa();
         Estudante e = new Estudante(nome, matricula, dataDeNascimento);
         this.estudantes.add(e);
         return e;
@@ -152,13 +153,11 @@ public class Escola {
 
 
     private ResultadoAvaliacao aplicarAvaliacaoEmPeriodo(Avaliacao avaliacao, int numeroEstudantesAptos, int periodo) {
+        assert Secretaria.numeroPeriodoValido(periodo);
         assert 0 <= periodo && periodo <= this.quantidadeEstudantesPresentesPorPeriodo.length - 1;
         assert numeroEstudantesAptos > 0;
 
         ResultadoAvaliacao resultado = null;
-
-        // TODO: get rid of this
-        // int quantidadeEstudantesPresentes = this.quantidadeEstudantesPresentesPorPeriodo[periodo];
 
         Random r = new Random();
 
@@ -178,9 +177,9 @@ public class Escola {
     public void aplicarAvaliacao(Avaliacao avaliacao) {
         int numeroAvaliacao = avaliacao.getNumero();
 
-        assert 1 <= numeroAvaliacao && numeroAvaliacao <= Secretaria.NUMERO_DE_PERIODOS;
+        assert Secretaria.numeroAvaliacaoValido(numeroAvaliacao);
 
-        int periodo = numeroAvaliacao - 1;
+        int periodo = numeroAvaliacao;
 
         for(Turma turma : this.turmas) {
             int numeroEstudantesAptos = 0;
@@ -194,7 +193,7 @@ public class Escola {
 
             ResultadoAvaliacao resultado = this.aplicarAvaliacaoEmPeriodo(avaliacao, numeroEstudantesAptos, periodo);
 
-            assert 0 <= periodo && periodo <= this.resultadosAvaliacoes.length - 1;
+            assert Secretaria.numeroPeriodoValido(periodo);
 
             this.resultadosAvaliacoes[periodo] = resultado;
 
@@ -211,9 +210,9 @@ public class Escola {
     public void registrarNotaAvaliacao(Avaliacao avaliacao, float nota) {
         int numeroAvaliacao = avaliacao.getNumero();
 
-        assert 1 <= numeroAvaliacao && numeroAvaliacao <= Secretaria.NUMERO_DE_PERIODOS;
+        assert Secretaria.numeroAvaliacaoValido(numeroAvaliacao);
 
-        int periodo = numeroAvaliacao - 1;
+        int periodo = numeroAvaliacao;
 
         for(Turma turma : this.turmas) {
             int numeroEstudantesAptos = 0;
@@ -227,7 +226,7 @@ public class Escola {
 
             ResultadoAvaliacao resultado = new ResultadoAvaliacao(avaliacao, nota);
 
-            assert 0 <= periodo && periodo <= this.resultadosAvaliacoes.length - 1;
+            assert Secretaria.numeroPeriodoValido(periodo);
 
             this.resultadosAvaliacoes[periodo] = resultado;
 
@@ -242,6 +241,7 @@ public class Escola {
     }
 
     public void atualizarQuantidadeEstudantesPresentesEmPeriodo(int quantidade, int periodo) {
+        assert Secretaria.numeroPeriodoValido(periodo);
         assert 0 <= periodo && periodo <= this.quantidadeEstudantesPresentesPorPeriodo.length - 1;
         this.quantidadeEstudantesPresentesPorPeriodo[periodo] = quantidade;
     }
